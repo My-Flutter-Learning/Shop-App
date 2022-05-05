@@ -22,16 +22,15 @@ class MyApp extends StatelessWidget {
     The create function provides an instance of Products() to all
     child widgets of MaterialApp.*/
 
-    return ChangeNotifierProvider(
-      create: (context) => Products(),
+    // Use this approcach if you do not need the context
+    return ChangeNotifierProvider.value(
+      value: Products(),
       child: MaterialApp(
         title: 'Shop App',
         theme: ThemeData(
-            primarySwatch: Colors.purple,
-            accentColor: Colors.deepOrange,
-            fontFamily: 'Lato,'
+            fontFamily: 'Lato,', colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple).copyWith(secondary: Colors.deepOrange)
         ),
-        home: ProductsOverviewScreen(),
+        home: const ProductsOverviewScreen(),
         routes: {
           ProductDetailScreen.routeName:(context) => const ProductDetailScreen(),
         },

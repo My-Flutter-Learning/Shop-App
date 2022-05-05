@@ -39,6 +39,7 @@ class Products with ChangeNotifier {
   ];
 
   List<Product> get items {
+    //return a copy of the items list
     return [..._items];
   }
 
