@@ -17,12 +17,14 @@ class ProductsGrid extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       itemCount: products.length,
       itemBuilder: 
-      // Use this approach of you do not need the context.
-      //The provider is directly tied to the data it is providing for.
-      /*It is also the approach that should be used 
-      when you are providing datah to single list or grid item as it does not bring up any errors
-      especially when the list becomes long and scrollable. This is because Flutter recycles widgets
-      and only changes the data in them. The previous approach would have not been able to keep up with this.*/
+      /* Use this approach of you do not need the context.
+        It is also the approach to be used when you are using already existing data
+       and not creating an new instance of a class a is happening in the main.dart file */
+      // The provider is directly tied to the data it is providing for.
+      /* This approach should be used when you are providing data to single list or grid item
+        as it does not bring up any errors especially when the list becomes long and scrollable.
+        This is because Flutter recycles widgets and only changes the data in them.
+        The previous approach would have not been able to keep up with this.*/
       (ctx, i) => ChangeNotifierProvider.value(
         value: products[i],
         child: const ProductItem(

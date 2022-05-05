@@ -22,9 +22,10 @@ class MyApp extends StatelessWidget {
     The create function provides an instance of Products() to all
     child widgets of MaterialApp.*/
 
-    // Use this approcach if you do not need the context
-    return ChangeNotifierProvider.value(
-      value: Products(),
+    return ChangeNotifierProvider(
+      /*This approach shuld be used when creating an new instance of an object
+      and you want to provide it to other widgets*/
+      create:(context) => Products(),
       child: MaterialApp(
         title: 'Shop App',
         theme: ThemeData(
