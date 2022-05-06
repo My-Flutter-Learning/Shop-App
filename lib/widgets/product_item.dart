@@ -33,9 +33,10 @@ class ProductItem extends StatelessWidget {
           backgroundColor: Colors.black.withOpacity(0.6),
           // Using Consumer allows you to rebuild parts of the widget tree instead of the entire tree
           leading: Consumer<Product>(
-            builder: (context, product, child) => 
+            //since child is not needed we put an underscore
+            builder: (context, product, _) => 
               IconButton(
-                icon: Icon( product.isFavourite ? Icons.favorite_border : Icons.favorite,
+                icon: Icon( product.isFavourite ? Icons.favorite: Icons.favorite_border,
                 color: Theme.of(context).accentColor),
                 onPressed: () {
                   product.toggleFavouriteStatus();
