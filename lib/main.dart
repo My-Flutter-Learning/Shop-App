@@ -1,5 +1,7 @@
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/providers/cart.dart';
 import 'package:shop_app/screens/product_detail_screen.dart';
 import './screens/products_overview_screen.dart';
 import './providers/products_provider.dart';
@@ -22,10 +24,13 @@ class MyApp extends StatelessWidget {
     The create function provides an instance of Products() to all
     child widgets of MaterialApp.*/
 
-    return ChangeNotifierProvider(
-      /*This approach shuld be used when creating an new instance of an object
-      and you want to provide it to other widgets*/
-      create:(context) => Products(),
+    return MultiProvider(providers: [
+        ChangeNotifierProvider(
+        /*This approach shuld be used when creating an new instance of an object
+        and you want to provide it to other widgets*/
+        create:(context) => Products(),),
+        ChangeNotifierProvider(create: (context) => Cart(),)
+      ], 
       child: MaterialApp(
         title: 'Shop App',
         theme: ThemeData(
