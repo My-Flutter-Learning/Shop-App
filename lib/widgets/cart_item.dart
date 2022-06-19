@@ -9,7 +9,8 @@ class CartItem extends StatelessWidget {
   final int? quantity;
   final String? title;
 
-  const CartItem(this.id, this.productId, this.price, this.quantity, this.title, {Key? key})
+  const CartItem(this.id, this.productId, this.price, this.quantity, this.title,
+      {Key? key})
       : super(key: key);
 
   @override
@@ -28,8 +29,37 @@ class CartItem extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
       ),
       direction: DismissDirection.endToStart,
+      confirmDismiss: (direction) {
+        return showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+                  title: const Text(
+                    'Are you sure?',
+                  ),
+                  content: const Text(
+                      'Confirm deletion of the selected item from the shopping cart.'),
+                  actions: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        TextButton(
+                            onPressed: () {
+                              Navigator.of(ctx).pop(false);
+                            },
+                            child: const Text('Cancel')),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(ctx).pop(true);
+                          },
+                          child: const Text('Delete', style: TextStyle(color: Colors.red),),
+                        ),
+                      ],
+                    )
+                  ],
+                ));
+      },
       onDismissed: (direction) {
-        Provider.of <pc.Cart>(context, listen: false).removeItem(productId!);
+        Provider.of<pc.Cart>(context, listen: false).removeItem(productId!);
       },
       child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
