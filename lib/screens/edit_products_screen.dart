@@ -43,6 +43,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   void _saveForm() {
+    final isValidated = _formkey.currentState!.validate();
+    if (!isValidated) {
+      return;
+    }
     _formkey.currentState!.save();
     print(editedProduct.title);
     print(editedProduct.description);
@@ -74,6 +78,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       price: editedProduct.price,
                       imageUrl: editedProduct.imageUrl);
                 },
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Required Field';
+                  }
+                  return null;
+                },
               ),
               TextFormField(
                   decoration: const InputDecoration(labelText: 'Price'),
@@ -90,7 +100,15 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         description: editedProduct.description,
                         price: double.parse(value!),
                         imageUrl: editedProduct.imageUrl);
-                  }),
+                  },
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Required Field';
+                    }
+                    return null;
+                  },
+                  ),
+                  
               TextFormField(
                   decoration: const InputDecoration(labelText: 'Description'),
                   maxLines: 3,
@@ -103,7 +121,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         description: value,
                         price: editedProduct.price,
                         imageUrl: editedProduct.imageUrl);
-                  }),
+                  },
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Required Field';
+                    }
+                    return null;
+                  },
+                  ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -145,7 +170,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               description: editedProduct.description,
                               price: editedProduct.price,
                               imageUrl: value);
-                        }),
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Required Field';
+                          }
+                          return null;
+                        },
+                        ),
                   ),
                 ],
               ),
