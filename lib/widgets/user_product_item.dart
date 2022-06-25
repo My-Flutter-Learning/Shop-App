@@ -16,7 +16,7 @@ class UserProductItem extends StatelessWidget {
         backgroundImage: NetworkImage(
             imageUrl), // fetches an image from its url. In this case, from the network.
       ),
-      trailing: Container(
+      trailing: SizedBox(
         width: 100,
         child: Row(
           children: [
