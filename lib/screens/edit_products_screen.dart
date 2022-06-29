@@ -88,7 +88,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
     _formkey.currentState!.save();
 
     if (_editedProduct.id != null) {
-      Provider.of<Products>(context, listen: false).updateProduct(_editedProduct.id!, _editedProduct);
+      Provider.of<Products>(context, listen: false)
+          .updateProduct(_editedProduct.id!, _editedProduct);
     } else {
       Provider.of<Products>(context, listen: false).addProducts(_editedProduct);
     }
@@ -136,7 +137,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 initialValue: _initValues['price'],
                 decoration: const InputDecoration(labelText: 'Price'),
                 textInputAction: TextInputAction.next,
-                keyboardType: TextInputType.number,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 focusNode: _priceFocusNode,
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(_descriptionFocusNode);
@@ -233,8 +235,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             description: _editedProduct.description,
                             price: _editedProduct.price,
                             imageUrl: value,
-                            isFavourite: _editedProduct.isFavourite
-                        );
+                            isFavourite: _editedProduct.isFavourite);
                       },
                       validator: (value) {
                         if (value!.isEmpty) {
