@@ -83,7 +83,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
   }
 
-  void _saveForm() {
+  Future<void> _saveForm() async {
     final isValidated = _formkey.currentState!.validate();
 
     if (!isValidated) {
@@ -107,11 +107,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
       Navigator.of(context).pop();
     } else {
-      Provider.of<Products>(context, listen: false)
-          .addProducts(_editedProduct)
-          .catchError((error) {
+      try {
+        await Provider.of<Products>(context, listen: false)
+            .addProducts(_editedProduct);
+      } catch (error) {
         _isDialogShown = true;
-        return showDialog<Null>(
+        await showDialog<Null>(
             context: context,
             builder: ((ctx) => AlertDialog(
                   title: const Text('An error occured!'),
@@ -124,7 +125,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         child: const Text('Okay'))
                   ],
                 )));
-      }).then((_) {
+      } finally {
         setState(() {
           _isLoading = false;
         });
@@ -135,7 +136,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
               backgroundColor: Theme.of(context).colorScheme.primary,
               content: const Text('Product added')));
         }
-      });
+      }
     }
   }
 
