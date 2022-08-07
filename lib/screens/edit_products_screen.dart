@@ -22,8 +22,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
   var _editedProduct =
       Product(id: null, title: '', description: '', price: 0, imageUrl: '');
 
-  var _isInit = true;
-
   var _initValues = {
     'title': '',
     'description': '',
@@ -31,7 +29,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
     'imageUrl': '',
   };
 
+  var _isInit = true;
   var _isLoading = false;
+  var _isDialogShown = false;
 
   @override
   void initState() {
@@ -109,15 +109,32 @@ class _EditProductScreenState extends State<EditProductScreen> {
     } else {
       Provider.of<Products>(context, listen: false)
           .addProducts(_editedProduct)
-          .then((_) {
+          .catchError((error) {
+        _isDialogShown = true;
+        return showDialog<Null>(
+            context: context,
+            builder: ((ctx) => AlertDialog(
+                  title: const Text('An error occured!'),
+                  content: const Text('Something went wrong.'),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(ctx).pop();
+                        },
+                        child: const Text('Okay'))
+                  ],
+                )));
+      }).then((_) {
         setState(() {
           _isLoading = false;
         });
         Navigator.of(context).pop();
 
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            content: const Text('Product added')));
+        if (!_isDialogShown) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              content: const Text('Product added')));
+        }
       });
     }
   }
@@ -136,7 +153,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     height: 20,
                   ),
                   Text('Loading...')
-              ],),
+                ],
+              ),
             )
           : Padding(
               padding: const EdgeInsets.all(16.0),
