@@ -69,23 +69,31 @@ class Products with ChangeNotifier {
   //   notifyListeners();
   // }
 
+  final url = Uri.parse(
+      'https://shop-app-6baad-default-rtdb.firebaseio.com/products.json');
+
+  Future<void> fetchAndSetProducts() async {
+    try {
+      final response = await http.get(url);
+      print(json.decode(response.body));
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   Future<void> addProducts(Product product) async {
-    final url = Uri.parse(
-        'https://shop-app-6baad-default-rtdb.firebaseio.com/products.json');
+    try {
+      final response = await http.post(url,
+          body: json.encode({
+            'Title': product.title,
+            'Description': product.description,
+            'Price': product.price,
+            'Image Url': product.imageUrl,
+            'isFavourite': product.isFavourite,
+            'Product Added': DateTime.now().toString(),
+          }));
 
-    try{
-    final response = await http
-        .post(url,
-            body: json.encode({
-              'Title': product.title,
-              'Description': product.description,
-              'Price': product.price,
-              'Image Url': product.imageUrl,
-              'isFavourite': product.isFavourite,
-              'Product Added': DateTime.now().toString(),
-            }));
-
-    final newProduct = Product(
+      final newProduct = Product(
           id: json.decode(response.body)['name'],
           title: product.title,
           description: product.description,
@@ -94,12 +102,11 @@ class Products with ChangeNotifier {
       _items.add(newProduct); // add at the end of the list
       // _items.insert(0, newProduct); // add at the beginning of the list
       notifyListeners();
-    }catch (error) {
+    } catch (error) {
       print(error);
       rethrow;
     }
-      
-    }
+  }
 
   void updateProduct(String id, Product upd) {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);

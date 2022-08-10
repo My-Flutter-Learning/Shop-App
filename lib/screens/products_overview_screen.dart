@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../providers/cart.dart';
+import '../providers/products_provider.dart';
 import '../widgets/badge.dart';
 import '../widgets/product_grid.dart';
 import '../screens/cart_screen.dart';
@@ -17,6 +19,25 @@ class ProductsOverviewScreen extends StatefulWidget {
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   var _showFavouritesOnly = false;
+  var _initState = true;
+
+  @override
+  void initState() {
+    // Provider.of<Products>(context).fetchAndSetProducts(); //won't work. This is because context is not available in initState
+    // Future.delayed(Duration.zero).then((value) {
+    //   Provider.of<Products>(context).fetchAndSetProducts();
+    // }); // This is a workaround that work that one can use.
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_initState) {
+      Provider.of<Products>(context).fetchAndSetProducts();
+    }
+    _initState = false; // This ensures that the fetchAndSetProducts method runs only once since didChangeDependencies runs multiple times.
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
