@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/cart.dart';
 import '../providers/products_provider.dart';
 import '../widgets/badge.dart';
+import '../widgets/loading_spinner.dart';
 import '../widgets/product_grid.dart';
 import '../screens/cart_screen.dart';
 import '../screens/side_drawer.dart';
@@ -19,7 +20,8 @@ class ProductsOverviewScreen extends StatefulWidget {
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   var _showFavouritesOnly = false;
-  var _initState = true;
+  var _isInit = true;
+  var _isLoading = false;
 
   @override
   void initState() {
@@ -32,10 +34,18 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
 
   @override
   void didChangeDependencies() {
-    if (_initState) {
-      Provider.of<Products>(context).fetchAndSetProducts();
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      Provider.of<Products>(context).fetchAndSetProducts().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
     }
-    _initState = false; // This ensures that the fetchAndSetProducts method runs only once since didChangeDependencies runs multiple times.
+    _isInit =
+        false; // This ensures that the fetchAndSetProducts method runs only once since didChangeDependencies runs multiple times.
     super.didChangeDependencies();
   }
 
@@ -80,7 +90,11 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         ],
       ),
       drawer: const SideDrawer(),
-      body: ProductsGrid(_showFavouritesOnly),
+      body: _isLoading
+          ? const LoadingSpinner(
+              text: '',
+            )
+          : ProductsGrid(_showFavouritesOnly),
     );
   }
 }

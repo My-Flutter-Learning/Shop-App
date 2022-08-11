@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/product.dart';
 import '../providers/products_provider.dart';
+import '../widgets/loading_spinner.dart';
 
 class EditProductScreen extends StatefulWidget {
   static const routeName = '/edit-screen';
@@ -112,7 +113,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
             .addProducts(_editedProduct);
       } catch (error) {
         _isDialogShown = true;
-        await showDialog<Null>(
+        await showDialog<void>(
             context: context,
             builder: ((ctx) => AlertDialog(
                   title: const Text('An error occured!'),
@@ -145,17 +146,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Edit Product')),
       body: _isLoading
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  CircularProgressIndicator(),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text('Loading...')
-                ],
-              ),
+          ? const LoadingSpinner(
+              text: 'Loading...',
             )
           : Padding(
               padding: const EdgeInsets.all(16.0),
