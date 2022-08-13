@@ -126,13 +126,13 @@ class Products with ChangeNotifier {
   Future<void> updateProduct(String id, Product upd) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
-      final patchUrl = Uri.parse(
+      final url = Uri.parse(
           'https://shop-app-6baad-default-rtdb.firebaseio.com/products/$id.json');
       // The ocde below is for getting the edit count.
-      final response = await http.get(patchUrl);
+      final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       print(extractedData);
-      await http.patch(patchUrl,
+      await http.patch(url,
           body: json.encode({
             'Title': upd.title,
             'Description': upd.description,
@@ -142,14 +142,31 @@ class Products with ChangeNotifier {
             'Edit Count': extractedData['Edit Count'] + 1,
           }));
       _items[prodIndex] = upd;
-      notifyListeners(); 
+      notifyListeners();
     } else {
       print('...');
     }
   }
 
   void deleteProduct(String id) {
-    _items.removeWhere((element) => element.id == id);
+    // This is optimistic updating.
+    // It helps with rollback if the delete fails.
+    // The  product to be deleted will be returned to the list of items and will be displayed.
+    final url = Uri.parse(
+        'https://shop-app-6baad-default-rtdb.firebaseio.com/products/$id.json');
+    final existingProductIndex =
+        _items.indexWhere((element) => element.id == id);
+    Product? existingProduct = _items[existingProductIndex];
+
+    http.delete(url).then((_) {
+      existingProduct = null;
+    }).catchError((_) {
+      _items.insert(existingProductIndex, existingProduct!);
+      notifyListeners();
+    });
+    
+    _items.removeAt(existingProductIndex);
     notifyListeners();
+
   }
 }
