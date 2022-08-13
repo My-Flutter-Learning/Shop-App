@@ -42,6 +42,7 @@ class Products with ChangeNotifier {
   ];
 
   // var _showFavouritesonly = false;
+  int editCount = 0;
 
   List<Product> get items {
     // if (_showFavouritesonly) {
@@ -103,6 +104,8 @@ class Products with ChangeNotifier {
             'Image Url': product.imageUrl,
             'isFavourite': product.isFavourite,
             'Product Added': DateTime.now().toString(),
+            'Product Edited': null,
+            'Edit Count': editCount
           }));
 
       final newProduct = Product(
@@ -120,10 +123,26 @@ class Products with ChangeNotifier {
     }
   }
 
-  void updateProduct(String id, Product upd) {
+  Future<void> updateProduct(String id, Product upd) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
+      final patchUrl = Uri.parse(
+          'https://shop-app-6baad-default-rtdb.firebaseio.com/products/$id.json');
+      // The ocde below is for getting the edit count.
+      final response = await http.get(patchUrl);
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      print(extractedData);
+      await http.patch(patchUrl,
+          body: json.encode({
+            'Title': upd.title,
+            'Description': upd.description,
+            'Image Url': upd.imageUrl,
+            'Price': upd.price,
+            'Product Edited': DateTime.now().toString(),
+            'Edit Count': extractedData['Edit Count'] + 1,
+          }));
       _items[prodIndex] = upd;
+      notifyListeners(); 
     } else {
       print('...');
     }
