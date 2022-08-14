@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/http_exception.dart';
+
 import './product.dart';
 
 class Products with ChangeNotifier {
@@ -148,25 +150,25 @@ class Products with ChangeNotifier {
     }
   }
 
-  void deleteProduct(String id) {
+  Future<void> deleteProduct(String id) async {
     // This is optimistic updating.
     // It helps with rollback if the delete fails.
     // The  product to be deleted will be returned to the list of items and will be displayed.
     final url = Uri.parse(
-        'https://shop-app-6baad-default-rtdb.firebaseio.com/products/$id.json');
+        'https://shop-app-6baad-default-rtdb.firebaseio.com/products/$id.jon');
     final existingProductIndex =
         _items.indexWhere((element) => element.id == id);
     Product? existingProduct = _items[existingProductIndex];
 
-    http.delete(url).then((_) {
-      existingProduct = null;
-    }).catchError((_) {
-      _items.insert(existingProductIndex, existingProduct!);
-      notifyListeners();
-    });
-    
     _items.removeAt(existingProductIndex);
     notifyListeners();
 
+    final response = await http.delete(url); 
+    if (response.statusCode >= 400) {
+      _items.insert(existingProductIndex, existingProduct);
+      notifyListeners();
+      throw HttpException('Could not delete product.');
+    }
+    existingProduct = null;
   }
 }
