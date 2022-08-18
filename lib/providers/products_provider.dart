@@ -155,7 +155,7 @@ class Products with ChangeNotifier {
     // It helps with rollback if the delete fails.
     // The  product to be deleted will be returned to the list of items and will be displayed.
     final url = Uri.parse(
-        'https://shop-app-6baad-default-rtdb.firebaseio.com/products/$id.jon');
+        'https://shop-app-6baad-default-rtdb.firebaseio.com/products/$id.json');
     final existingProductIndex =
         _items.indexWhere((element) => element.id == id);
     Product? existingProduct = _items[existingProductIndex];
@@ -163,7 +163,7 @@ class Products with ChangeNotifier {
     _items.removeAt(existingProductIndex);
     notifyListeners();
 
-    final response = await http.delete(url); 
+    final response = await http.delete(url);
     if (response.statusCode >= 400) {
       _items.insert(existingProductIndex, existingProduct);
       notifyListeners();
