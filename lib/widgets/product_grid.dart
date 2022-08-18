@@ -26,10 +26,11 @@ class ProductsGrid extends StatelessWidget {
         The previous approach would have not been able to keep up with this.*/
           (ctx, i) => ChangeNotifierProvider.value(
         value: products[i],
-        child: const ProductItem(
+        child: ProductItem(
             // products[i].id!,
             // products[i].title!,
             // products[i].imageUrl!
+            key: Key(products[i].id!),
             ),
       ),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
