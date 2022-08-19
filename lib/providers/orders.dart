@@ -20,7 +20,7 @@ class OrderItem {
 }
 
 class Orders with ChangeNotifier {
-  final List<OrderItem> _orders = [];
+  List<OrderItem> _orders = [];
   final url = Uri.parse(
       'https://shop-app-6baad-default-rtdb.firebaseio.com/orders.json');
 
@@ -28,18 +28,46 @@ class Orders with ChangeNotifier {
     return [..._orders];
   }
 
+  Future<void> fetchAndSetOrders() async {
+    final response = await http.get(url);
+    final List<OrderItem> loadedOrders = [];
+    final extractedData = json.decode(response.body) as Map<String, dynamic>;
+    if (extractedData == null) {
+      return;
+    }
+    extractedData.forEach((orderId, orderData) {
+      loadedOrders.add(OrderItem(
+        id: orderId,
+        amount: orderData['Amount'],
+        dateTime: DateTime.parse(orderData['DateTime']),
+        products: (orderData['Products'] as List<dynamic>)
+            .map((item) => CartItem(
+                id: item['id'],
+                title: item['Title'],
+                quantity: item['Quantity'],
+                price: item['Price']))
+            .toList(),
+      ));
+    });
+    _orders = loadedOrders.reversed.toList();
+    notifyListeners();
+  }
+
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
     final timestamp = DateTime.now();
-    final response = await http.post(url, body: json.encode({
-      'Amount':total,
-      'DateTime': timestamp.toIso8601String(),
-      'Products': cartProducts.map((cartProduct) => {
-        'id': cartProduct.id,
-        'Title':cartProduct.title,
-        'Price': cartProduct.price,
-        'Quantity': cartProduct.quantity,
-      }).toList(),
-    }));
+    final response = await http.post(url,
+        body: json.encode({
+          'Amount': total,
+          'DateTime': timestamp.toIso8601String(),
+          'Products': cartProducts
+              .map((cartProduct) => {
+                    'id': cartProduct.id,
+                    'Title': cartProduct.title,
+                    'Price': cartProduct.price,
+                    'Quantity': cartProduct.quantity,
+                  })
+              .toList(),
+        }));
     _orders.insert(
         0,
         OrderItem(
