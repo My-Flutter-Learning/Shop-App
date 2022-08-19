@@ -105,7 +105,7 @@ class Products with ChangeNotifier {
             'Price': product.price,
             'Image Url': product.imageUrl,
             'isFavourite': product.isFavourite,
-            'Product Added': DateTime.now().toString(),
+            'Product Added': DateTime.now().toIso8601String(),
             'Product Edited': null,
             'Edit Count': editCount
           }));
@@ -140,7 +140,7 @@ class Products with ChangeNotifier {
             'Description': upd.description,
             'Image Url': upd.imageUrl,
             'Price': upd.price,
-            'Product Edited': DateTime.now().toString(),
+            'Product Edited': DateTime.now().toIso8601String(),
             'Edit Count': extractedData['Edit Count'] + 1,
           }));
       _items[prodIndex] = upd;
