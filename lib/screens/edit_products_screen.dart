@@ -126,10 +126,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         child: const Text('Okay'))
                   ],
                 )));
-        } finally {
-          setState(() {
-            _isLoading = false;
-          });
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
         Navigator.of(context).pop();
 
         if (!_isDialogShown) {
