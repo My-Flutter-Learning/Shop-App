@@ -6,18 +6,33 @@ import '../widgets/loading_spinner.dart';
 import '../widgets/order_item.dart';
 import '../screens/side_drawer.dart';
 
-class OrdersScreen extends StatelessWidget {
+class OrdersScreen extends StatefulWidget {
   static const routeName = '/orders';
   const OrdersScreen({Key? key}) : super(key: key);
 
+  @override
+  State<OrdersScreen> createState() => _OrdersScreenState();
+}
+
+class _OrdersScreenState extends State<OrdersScreen> {
+  late Future _ordersFuture;
+
+  Future _obtainOtdersFuture() {
+    return Provider.of<Orders>(context, listen: false).fetchAndSetOrders();
+  }
+
+  @override
+  void initState() {
+    _ordersFuture = _obtainOtdersFuture();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: const Text('Your Orders')),
         drawer: const SideDrawer(),
         body: FutureBuilder(
-            future:
-                Provider.of<Orders>(context, listen: false).fetchAndSetOrders(),
+            future:_ordersFuture,
             builder: ((context, dataSnapshot) {
               if (dataSnapshot.connectionState == ConnectionState.waiting) {
                 return const LoadingSpinner(
