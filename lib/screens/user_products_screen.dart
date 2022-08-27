@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/products_provider.dart';
+import '../widgets/bottom_navbar.dart';
 import '../widgets/user_product_item.dart';
 import '../screens/edit_products_screen.dart';
 import '../screens/side_drawer.dart';
+
 
 class UserProductsScreen extends StatelessWidget {
   static const routeName = '/user-products';
@@ -17,6 +19,7 @@ class UserProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productsData = Provider.of<Products>(context);
+    int pageIndex = 2;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Products'),
@@ -48,6 +51,7 @@ class UserProductsScreen extends StatelessWidget {
               itemCount: productsData.items.length),
         ),
       ),
+      bottomNavigationBar: BottomNavBar(pageIndex),
     );
   }
 }

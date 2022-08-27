@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/widgets/bottom_navbar.dart';
 
 import '../providers/cart.dart';
 import '../providers/products_provider.dart';
@@ -22,6 +23,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   var _showFavouritesOnly = false;
   var _isInit = true;
   var _isLoading = false;
+  int pageIndex = 0;
 
   @override
   void initState() {
@@ -95,6 +97,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
               text: '',
             )
           : ProductsGrid(_showFavouritesOnly),
+      bottomNavigationBar: BottomNavBar(pageIndex),
     );
   }
 }
