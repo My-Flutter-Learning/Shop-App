@@ -19,6 +19,7 @@ class UserProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productsData = Provider.of<Products>(context);
+    int pageIndex = 2;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Products'),
@@ -50,7 +51,7 @@ class UserProductsScreen extends StatelessWidget {
               itemCount: productsData.items.length),
         ),
       ),
-      bottomNavigationBar: const BottomNavBar(),
+      bottomNavigationBar: BottomNavBar(pageIndex),
     );
   }
 }

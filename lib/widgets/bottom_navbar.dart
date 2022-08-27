@@ -4,15 +4,14 @@ import '../screens/orders_screen.dart';
 import '../screens/user_products_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({Key? key}) : super(key: key);
+  final int pageIndex;
+  const BottomNavBar(this.pageIndex, {Key? key}) : super(key: key);
 
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-  int _selectedIndex = 0;
-
   // void _onItemTap(int index) {
   //   setState(() {
   //     _selectedIndex = index;
@@ -32,6 +31,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
+    int _selectedIndex = widget.pageIndex;
     return BottomNavigationBar(
         backgroundColor: Colors.white,
         elevation: 5.0,
@@ -49,7 +49,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               case 1:
                 Navigator.of(context)
                     .pushReplacementNamed(OrdersScreen.routeName);
-                
+
                 break;
               case 2:
                 Navigator.of(context)

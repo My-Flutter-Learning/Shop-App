@@ -17,6 +17,7 @@ class OrdersScreen extends StatefulWidget {
 
 class _OrdersScreenState extends State<OrdersScreen> {
   late Future _ordersFuture;
+  int pageIndex = 1;
 
   Future _obtainOtdersFuture() {
     return Provider.of<Orders>(context, listen: false).fetchAndSetOrders();
@@ -54,7 +55,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       ));
             }
           })),
-      bottomNavigationBar: const BottomNavBar(),
+      bottomNavigationBar: BottomNavBar(pageIndex),
     );
   }
 }

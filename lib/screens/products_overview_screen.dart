@@ -23,6 +23,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   var _showFavouritesOnly = false;
   var _isInit = true;
   var _isLoading = false;
+  int pageIndex = 0;
 
   @override
   void initState() {
@@ -96,7 +97,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
               text: '',
             )
           : ProductsGrid(_showFavouritesOnly),
-      bottomNavigationBar: const BottomNavBar(),
+      bottomNavigationBar: BottomNavBar(pageIndex),
     );
   }
 }
