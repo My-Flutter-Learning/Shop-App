@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 import '../screens/orders_screen.dart';
 import '../screens/user_products_screen.dart';
@@ -32,7 +33,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     int _selectedIndex = widget.pageIndex;
-    return BottomNavigationBar(
+
+    Widget basicNav = BottomNavigationBar(
         backgroundColor: Colors.white,
         elevation: 5.0,
         items: const [
@@ -60,5 +62,39 @@ class _BottomNavBarState extends State<BottomNavBar> {
             }
           });
         });
+    Widget curvedNav = CurvedNavigationBar(
+      animationCurve: Curves.linearToEaseOut,
+      // animationDuration: const Duration(milliseconds: 400),
+      backgroundColor: Colors.white,
+      buttonBackgroundColor: Theme.of(context).colorScheme.primary,
+      color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+      height: 55,
+      items: const [
+        Icon(Icons.home, color: Colors.white,),
+        Icon(Icons.assignment_outlined),
+        Icon(Icons.edit)
+      ],
+      index: _selectedIndex,
+      onTap: (index) {
+        setState(() {
+          _selectedIndex = index;
+          switch (_selectedIndex) {
+            case 1:
+              Navigator.of(context)
+                  .pushReplacementNamed(OrdersScreen.routeName);
+
+              break;
+            case 2:
+              Navigator.of(context)
+                  .pushReplacementNamed(UserProductsScreen.routeName);
+              break;
+            default:
+              Navigator.of(context).pushReplacementNamed('/');
+          }
+        }
+        );
+      }
+    );
+    return basicNav;
   }
 }
