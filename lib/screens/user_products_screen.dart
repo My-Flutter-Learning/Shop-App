@@ -38,20 +38,22 @@ class UserProductsScreen extends StatelessWidget {
         onRefresh: () => _refreshScreen(context),
         child: Padding(
           padding: const EdgeInsets.all(8),
-          child: ListView.builder(
-              itemBuilder: ((_, i) => Column(
-                    children: [
-                      UserProductItem(
-                          productsData.items[i].id!,
-                          productsData.items[i].title!,
-                          productsData.items[i].imageUrl!),
-                      const Divider(),
-                    ],
-                  )),
-              itemCount: productsData.items.length),
+          child: SizedBox(
+            child: ListView.builder(
+                itemBuilder: ((_, i) => Column(
+                      children: [
+                        UserProductItem(
+                            productsData.items[i].id!,
+                            productsData.items[i].title!,
+                            productsData.items[i].imageUrl!),
+                        const Divider(),
+                      ],
+                    )),
+                itemCount: productsData.items.length),
+          ),
         ),
       ),
-      bottomNavigationBar: BottomNavBar(pageIndex),
+      // bottomNavigationBar: BottomNavBar(pageIndex),
     );
   }
 }

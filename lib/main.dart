@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:shop_app/controllers/pages_controller.dart';
 
 import './providers/cart.dart';
 import './providers/orders.dart';
@@ -14,7 +14,7 @@ import './screens/user_products_screen.dart';
 
 void main() {
   runApp(const MyApp());
-} 
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -49,7 +49,8 @@ class MyApp extends StatelessWidget {
             fontFamily: 'Lato,',
             colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple)
                 .copyWith(secondary: Colors.deepOrange)),
-        home: const ProductsOverviewScreen(),
+        // home: const ProductsOverviewScreen(),
+        home: const PagesController(),
         routes: {
           ProductDetailScreen.routeName: (context) =>
               const ProductDetailScreen(),

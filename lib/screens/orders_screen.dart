@@ -55,7 +55,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       ));
             }
           })),
-      bottomNavigationBar: BottomNavBar(pageIndex),
+      // bottomNavigationBar: BottomNavBar(pageIndex),
     );
   }
 }

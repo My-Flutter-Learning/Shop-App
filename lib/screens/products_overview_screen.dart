@@ -97,7 +97,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
               text: '',
             )
           : ProductsGrid(_showFavouritesOnly),
-      bottomNavigationBar: BottomNavBar(pageIndex),
+      // bottomNavigationBar: BottomNavBar(pageIndex),
     );
   }
 }

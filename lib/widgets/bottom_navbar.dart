@@ -95,6 +95,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
         );
       }
     );
-    return curvedNav;
+    return basicNav;
   }
 }
