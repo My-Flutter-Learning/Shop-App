@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 import './providers/cart.dart';
 import './providers/orders.dart';
 import './providers/products_provider.dart';
+import './screens/auth_screen.dart';
 import './screens/cart_screen.dart';
 import './screens/edit_products_screen.dart';
 import './screens/orders_screen.dart';
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
             fontFamily: 'Lato,',
             colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple)
                 .copyWith(secondary: Colors.deepOrange)),
-        home: const ProductsOverviewScreen(),
+        home: const AuthScreen(),
         routes: {
           ProductDetailScreen.routeName: (context) =>
               const ProductDetailScreen(),
