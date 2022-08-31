@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/products_provider.dart';
-import '../widgets/bottom_navbar.dart';
+// import '../widgets/bottom_navbar.dart';
 import '../widgets/user_product_item.dart';
 import '../screens/edit_products_screen.dart';
 import '../screens/side_drawer.dart';
@@ -51,7 +51,7 @@ class UserProductsScreen extends StatelessWidget {
               itemCount: productsData.items.length),
         ),
       ),
-      bottomNavigationBar: BottomNavBar(pageIndex),
+      // bottomNavigationBar: BottomNavBar(pageIndex),
     );
   }
 }

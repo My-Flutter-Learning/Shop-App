@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/widgets/bottom_navbar.dart';
+// import 'package:shop_app/widgets/bottom_navbar.dart';
 
 import '../providers/orders.dart' show Orders;
 import '../widgets/loading_spinner.dart';
@@ -55,7 +55,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       ));
             }
           })),
-      bottomNavigationBar: BottomNavBar(pageIndex),
+      // bottomNavigationBar: BottomNavBar(pageIndex),
     );
   }
 }
