@@ -33,7 +33,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Your Orders')),
-      drawer: const SideDrawer(),
+      // drawer: const SideDrawer(),
       body: FutureBuilder(
           future: _ordersFuture,
           builder: ((context, dataSnapshot) {

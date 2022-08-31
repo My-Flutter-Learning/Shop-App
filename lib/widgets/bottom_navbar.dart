@@ -50,15 +50,15 @@ class _BottomNavBarState extends State<BottomNavBar> {
             switch (_selectedIndex) {
               case 1:
                 Navigator.of(context)
-                    .pushReplacementNamed(OrdersScreen.routeName);
+                    .pushNamed(OrdersScreen.routeName);
 
                 break;
               case 2:
                 Navigator.of(context)
-                    .pushReplacementNamed(UserProductsScreen.routeName);
+                    .pushNamed(UserProductsScreen.routeName);
                 break;
               default:
-                Navigator.of(context).pushReplacementNamed('/');
+                Navigator.of(context).pushNamed('/');
             }
           });
         });
@@ -81,15 +81,15 @@ class _BottomNavBarState extends State<BottomNavBar> {
           switch (_selectedIndex) {
             case 1:
               Navigator.of(context)
-                  .pushReplacementNamed(OrdersScreen.routeName);
+                  .pushNamed(OrdersScreen.routeName);
 
               break;
             case 2:
               Navigator.of(context)
-                  .pushReplacementNamed(UserProductsScreen.routeName);
+                  .pushNamed(UserProductsScreen.routeName);
               break;
             default:
-              Navigator.of(context).pushReplacementNamed('/');
+              Navigator.of(context).pushNamed('/');
           }
         }
         );

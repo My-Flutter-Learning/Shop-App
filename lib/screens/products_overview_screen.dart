@@ -91,7 +91,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
           )
         ],
       ),
-      drawer: const SideDrawer(),
+      // drawer: const SideDrawer(),
       body: _isLoading
           ? const LoadingSpinner(
               text: '',
