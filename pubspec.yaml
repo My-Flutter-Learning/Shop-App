@@ -85,9 +85,10 @@ flutter:
         - asset: assets/fonts/Lato-Regular.ttf
         - asset: assets/fonts/Lato-Bold.ttf
           weight: 700
-    - family: Anton
+    - family: MultiDisplay
       fonts:
-        - asset: assets/fonts/Anton-Regular.ttf
+        - asset: assets/fonts/MultiDisplay-Regular.otf
+        - asset: assets/fonts/MultiDisplay-Medium.otf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -1,8 +1,10 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 enum AuthMode { Signup, Login }
+
+Color baseColor = const Color.fromARGB(255, 174, 253, 177);
+Color secColor = const Color.fromARGB(255, 99, 255, 105);
+Color sec2Color = const Color.fromARGB(255, 50, 128, 52);
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -15,17 +17,7 @@ class AuthScreen extends StatelessWidget {
       body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  const Color.fromRGBO(215, 117, 255, 1).withOpacity(0.5),
-                  const Color.fromRGBO(255, 188, 117, 1).withOpacity(0.9),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                stops: const [0, 1],
-              ),
-            ),
+            decoration: BoxDecoration(color: baseColor),
           ),
           SingleChildScrollView(
             child: SizedBox(
@@ -40,26 +32,16 @@ class AuthScreen extends StatelessWidget {
                       margin: const EdgeInsets.only(bottom: 20.0),
                       padding: const EdgeInsets.symmetric(
                           vertical: 8.0, horizontal: 94.0),
-                      transform: Matrix4.rotationZ(-8 * pi / 180)
-                        ..translate(-10.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.deepOrange.shade900,
-                        boxShadow: const [
-                          BoxShadow(
-                            blurRadius: 8,
-                            color: Colors.black26,
-                            offset: Offset(0, 2),
-                          )
-                        ],
-                      ),
-                      child: const Text(
-                        'MyShop',
+                      child: Text(
+                        'My Shop',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Colors.white,
+                          // TO DO: make this color a bit dark
+                          color: sec2Color,
                           fontSize: 50,
-                          fontFamily: 'Anton',
-                          fontWeight: FontWeight.normal,
+                          fontFamily: 'MultiDisplay',
+                          fontWeight: FontWeight.w500,
+                          
                         ),
                       ),
                     ),
@@ -129,103 +111,116 @@ class _AuthCardState extends State<AuthCard> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      elevation: 8.0,
-      child: Container(
-        height: _authMode == AuthMode.Signup ? 320 : 260,
-        constraints:
-            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 260),
-        width: deviceSize.width * 0.75,
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'E-Mail'),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value!.isEmpty || !value.contains('@')) {
-                      return 'Invalid email!';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    _authData['email'] = value!;
-                  },
+    return Container(
+      height: _authMode == AuthMode.Signup ? 320 : 260,
+      constraints:
+          BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 260),
+      width: deviceSize.width * 0.75,
+      padding: const EdgeInsets.all(16.0),
+      child: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              TextFormField(
+                cursorColor: sec2Color,
+                decoration: InputDecoration(
+                  labelText: 'E-Mail',
+                  labelStyle: TextStyle(color: sec2Color),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: sec2Color),
+                  ),
                 ),
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  if (value!.isEmpty || !value.contains('@')) {
+                    return 'Invalid email!';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  _authData['email'] = value!;
+                },
+              ),
+              TextFormField(
+                cursorColor: sec2Color,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  labelStyle: TextStyle(color: sec2Color),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: sec2Color),
+                  ),
+                ),
+                obscureText: true,
+                controller: _passwordController,
+                validator: (value) {
+                  if (value!.isEmpty || value.length < 5) {
+                    return 'Password is too short!';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  _authData['password'] = value!;
+                },
+              ),
+              if (_authMode == AuthMode.Signup)
                 TextFormField(
-                  decoration: const InputDecoration(labelText: 'Password'),
+                  enabled: _authMode == AuthMode.Signup,
+                  cursorColor: sec2Color,
+                  decoration: InputDecoration(
+                    labelText: 'Confirm Password',
+                    labelStyle: TextStyle(color: sec2Color),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: sec2Color),
+                    ),
+                  ),
                   obscureText: true,
-                  controller: _passwordController,
-                  validator: (value) {
-                    if (value!.isEmpty || value.length < 5) {
-                      return 'Password is too short!';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    _authData['password'] = value!;
-                  },
-                ),
-                if (_authMode == AuthMode.Signup)
-                  TextFormField(
-                    enabled: _authMode == AuthMode.Signup,
-                    decoration:
-                        const InputDecoration(labelText: 'Confirm Password'),
-                    obscureText: true,
-                    validator: _authMode == AuthMode.Signup
-                        ? (value) {
-                            if (value! != _passwordController.text) {
-                              return 'Passwords do not match!';
-                            }
-                            return null;
+                  validator: _authMode == AuthMode.Signup
+                      ? (value) {
+                          if (value! != _passwordController.text) {
+                            return 'Passwords do not match!';
                           }
-                        : null,
-                  ),
-                const SizedBox(
-                  height: 20,
+                          return null;
+                        }
+                      : null,
                 ),
-                if (_isLoading)
-                  const CircularProgressIndicator()
-                else
-                  ElevatedButton(
-                    child:
-                        Text(_authMode == AuthMode.Login ? 'Login' : 'Sign up'),
-                    onPressed: _submit,
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                        const EdgeInsets.symmetric(
-                            horizontal: 30.0, vertical: 8.0),
-                      ),
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          Theme.of(context).colorScheme.primary),
-                    ),
-                  ),
-                TextButton(
-                  child: Text(
-                      '${_authMode == AuthMode.Login ? 'Sign up' : 'Login'} instead'),
-                  onPressed: _switchAuthMode,
+              const SizedBox(
+                height: 20,
+              ),
+              if (_isLoading)
+                const CircularProgressIndicator()
+              else
+                ElevatedButton(
+                  child:
+                      Text(_authMode == AuthMode.Login ? 'Login' : 'Sign up'),
+                  onPressed: _submit,
                   style: ButtonStyle(
-                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                      const EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
                     ),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    foregroundColor: MaterialStateProperty.all<Color>(
-                        Theme.of(context).colorScheme.primary),
+                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                      const EdgeInsets.symmetric(
+                          horizontal: 30.0, vertical: 8.0),
+                    ),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(sec2Color),
                   ),
                 ),
-              ],
-            ),
+              TextButton(
+                child: Text(
+                    '${_authMode == AuthMode.Login ? 'Sign up' : 'Login'} instead'),
+                onPressed: _switchAuthMode,
+                style: ButtonStyle(
+                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                    const EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
+                  ),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  foregroundColor: MaterialStateProperty.all<Color>(sec2Color),
+                ),
+              ),
+            ],
           ),
         ),
       ),
