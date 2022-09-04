@@ -190,7 +190,7 @@ class _AuthCardState extends State<AuthCard> {
                 height: 20,
               ),
               if (_isLoading)
-                const CircularProgressIndicator()
+                CircularProgressIndicator(color: sec2Color,)
               else
                 ElevatedButton(
                   child:
