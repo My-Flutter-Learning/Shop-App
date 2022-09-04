@@ -1,13 +1,7 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_config/flutter_config.dart';
-import 'package:firebase_admin/firebase_admin.dart';
 
-import './providers/auth.dart' as MyAuth;
+import './providers/auth.dart';
 import './providers/cart.dart';
 import './providers/orders.dart';
 import './providers/products_provider.dart';
@@ -18,33 +12,7 @@ import './screens/orders_screen.dart';
 import './screens/product_detail_screen.dart';
 import './screens/user_products_screen.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await FlutterConfig.loadEnvVariables();
-
-  final tempDir = await getTemporaryDirectory();
-  final file = File('${tempDir.path}/service-account.json');
-  final data = json.encode({
-    "type": FlutterConfig.get('type'),
-    "project_id": FlutterConfig.get('project_id'),
-    "private_key_id": FlutterConfig.get('private_key_id'),
-    "private_key": FlutterConfig.get('private_key'),
-    "client_email": FlutterConfig.get('client_email'),
-    "client_id": FlutterConfig.get('client_id'),
-    "auth_uri": FlutterConfig.get('auth_uri'),
-    "token_uri": FlutterConfig.get('token_uri'),
-    "auth_provider_x509_cert_url":
-        FlutterConfig.get('auth_provider_x509_cert_url'),
-    "client_x509_cert_url": FlutterConfig.get('client_x509_cert_url'),
-  });
-  await file.writeAsString(data);
-
-  final app = FirebaseAdmin.instance.initializeApp(
-    AppOptions(
-      credential: FirebaseAdmin.instance.certFromPath(file.path),
-    ),
-  );
-
+void main() {
   runApp(const MyApp());
 }
 
@@ -64,7 +32,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => MyAuth.Auth(),
+          create: ((context) => Auth()),
         ),
         ChangeNotifierProvider(
           /*This approach shuld be used when creating an new instance of an object
