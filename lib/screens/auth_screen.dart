@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -41,7 +43,6 @@ class AuthScreen extends StatelessWidget {
                           fontSize: 50,
                           fontFamily: 'MultiDisplay',
                           fontWeight: FontWeight.w500,
-                          
                         ),
                       ),
                     ),
@@ -77,7 +78,7 @@ class _AuthCardState extends State<AuthCard> {
   bool _isLoading = false;
   final _passwordController = TextEditingController();
 
-  void _submit() {
+  Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) {
       // Invalid
       return;
@@ -89,7 +90,8 @@ class _AuthCardState extends State<AuthCard> {
     if (_authMode == AuthMode.Login) {
       // Log user in
     } else {
-      // Sign user up
+      await Provider.of<Auth>(context, listen: false)
+          .signup(_authData['email']!, _authData['password']!);
     }
     setState(() {
       _isLoading = false;
@@ -188,7 +190,7 @@ class _AuthCardState extends State<AuthCard> {
                 height: 20,
               ),
               if (_isLoading)
-                const CircularProgressIndicator()
+                CircularProgressIndicator(color: sec2Color)
               else
                 ElevatedButton(
                   child:
