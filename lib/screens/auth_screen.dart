@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shop_app/providers/auth.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -43,6 +41,7 @@ class AuthScreen extends StatelessWidget {
                           fontSize: 50,
                           fontFamily: 'MultiDisplay',
                           fontWeight: FontWeight.w500,
+                          
                         ),
                       ),
                     ),
@@ -78,7 +77,7 @@ class _AuthCardState extends State<AuthCard> {
   bool _isLoading = false;
   final _passwordController = TextEditingController();
 
-  Future<void> _submit() async {
+  void _submit() {
     if (!_formKey.currentState!.validate()) {
       // Invalid
       return;
@@ -90,8 +89,7 @@ class _AuthCardState extends State<AuthCard> {
     if (_authMode == AuthMode.Login) {
       // Log user in
     } else {
-      await Provider.of<Auth>(context, listen: false)
-          .signup(_authData['email']!, _authData['password']!);
+      // Sign user up
     }
     setState(() {
       _isLoading = false;
