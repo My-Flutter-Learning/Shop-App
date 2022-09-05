@@ -88,7 +88,8 @@ class _AuthCardState extends State<AuthCard> {
       _isLoading = true;
     });
     if (_authMode == AuthMode.Login) {
-      // Log user in
+      await Provider.of<Auth>(context, listen: false)
+          .login(_authData['email']!, _authData['password']!);
     } else {
       await Provider.of<Auth>(context, listen: false)
           .signup(_authData['email']!, _authData['password']!);
@@ -113,6 +114,7 @@ class _AuthCardState extends State<AuthCard> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+    // final statusCode = ModalRoute.of(context)!.settings.arguments as Auth;
     return Container(
       height: _authMode == AuthMode.Signup ? 320 : 260,
       constraints:
@@ -222,6 +224,24 @@ class _AuthCardState extends State<AuthCard> {
                   foregroundColor: MaterialStateProperty.all<Color>(sec2Color),
                 ),
               ),
+              // statusCode.signupStatusCode == 200
+              //     ? SnackBar(
+              //         content: const Text('Signup Successful!'),
+              //         backgroundColor: sec2Color,
+              //       )
+              //     : SnackBar(
+              //         content: const Text('Signup Failed!'),
+              //         backgroundColor: Theme.of(context).colorScheme.error,
+              //       ),
+              // statusCode.loginStatusCode == 200
+              //     ? SnackBar(
+              //         content: const Text('Login Successful!'),
+              //         backgroundColor: sec2Color,
+              //       )
+              //     : SnackBar(
+              //         content: const Text('Login Failed!'),
+              //         backgroundColor: Theme.of(context).colorScheme.error,
+              //       ),
             ],
           ),
         ),
