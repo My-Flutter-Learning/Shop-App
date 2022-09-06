@@ -3,16 +3,14 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:http/http.dart' as http;
+import '../models/http_exception.dart';
 
 class Auth with ChangeNotifier {
   late String _userId;
-  late int loginStatusCode = 0;
-  late int signupStatusCode = 0;
 
-  Future<void> signup(String email, String password) async {
-    final url = Uri.parse(FlutterConfig.get('signup_url') +
-        "?key=" +
-        FlutterConfig.get('API_KEY'));
+  Future<void> _authenticate(
+      String email, String password, String urlSegment) async {
+    final url = Uri.parse(urlSegment + "?key=" + FlutterConfig.get('API_KEY'));
 
     try {
       final response = await http.post(
@@ -25,33 +23,20 @@ class Auth with ChangeNotifier {
           },
         ),
       );
-      signupStatusCode = response.statusCode;
-      print("Signup: " + response.statusCode.toString());
+      final responseData = json.decode(response.body);
+      if (responseData['error'] != null) {
+        throw HttpException(responseData['error']['message']);
+      }
     } catch (error) {
-      rethrow;
+      throw HttpException(error.toString());
     }
   }
 
-  Future<void> login(String email, String password) async {
-    final url = Uri.parse(FlutterConfig.get('login_url') +
-        "?key=" +
-        FlutterConfig.get('API_KEY'));
+  Future<void> signup(String email, String password) async {
+    return _authenticate(email, password, FlutterConfig.get('signup_url'));
+  }
 
-    try {
-      final response = await http.post(
-        url,
-        body: json.encode(
-          {
-            'email': email,
-            'password': password,
-            'returnSecureToken': true,
-          },
-        ),
-      );
-      loginStatusCode = response.statusCode;
-      print("Login: " + response.statusCode.toString());
-    } catch (error) {
-      rethrow;
-    }
+  Future<void> login(String email, String password) async {
+    return _authenticate(email, password, FlutterConfig.get('login_url'));
   }
 }

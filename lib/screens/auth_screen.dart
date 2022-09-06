@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/http_exception.dart';
 import '../providers/auth.dart';
 
 enum AuthMode { Signup, Login }
@@ -78,6 +79,20 @@ class _AuthCardState extends State<AuthCard> {
   bool _isLoading = false;
   final _passwordController = TextEditingController();
 
+  void _showErrorDialog(String message) {
+    showDialog(
+        context: context,
+        builder: ((ctx) => AlertDialog(
+              title: const Text('An Error Occurred!'),
+              content: Text(message),
+              actions: [
+                TextButton(
+                    onPressed: () => Navigator.of(ctx).pop(),
+                    child: const Text('Okay'))
+              ],
+            )));
+  }
+
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) {
       // Invalid
@@ -87,12 +102,32 @@ class _AuthCardState extends State<AuthCard> {
     setState(() {
       _isLoading = true;
     });
-    if (_authMode == AuthMode.Login) {
-      await Provider.of<Auth>(context, listen: false)
-          .login(_authData['email']!, _authData['password']!);
-    } else {
-      await Provider.of<Auth>(context, listen: false)
-          .signup(_authData['email']!, _authData['password']!);
+    try {
+      if (_authMode == AuthMode.Login) {
+        await Provider.of<Auth>(context, listen: false)
+            .login(_authData['email']!, _authData['password']!);
+      } else {
+        await Provider.of<Auth>(context, listen: false)
+            .signup(_authData['email']!, _authData['password']!);
+      }
+    } on HttpException catch (error) {
+      String errorMessage = 'Authentication failed';
+      if (error.message.contains('EMAIL_EXISTS')) {
+        errorMessage = 'This email address is already in use';
+      } else if (error.message.contains('INVALID_EMAIL')) {
+        errorMessage = 'This is not a valid email address';
+      } else if (error.message.contains('WEAK_PASSWORD')) {
+        errorMessage = 'This password is too weak';
+      } else if (error.message.contains('EMAIL_NOT_FOUND')) {
+        errorMessage = 'Could not find a user with that email';
+      } else if (error.message.contains('INVALID_PASSWORD')) {
+        errorMessage = 'Invalid password';
+      }
+      _showErrorDialog(errorMessage);
+    } catch (error) {
+      const errorMessage =
+          'Could not authenticate you. Please try again later.';
+      _showErrorDialog(errorMessage);
     }
     setState(() {
       _isLoading = false;
@@ -224,24 +259,6 @@ class _AuthCardState extends State<AuthCard> {
                   foregroundColor: MaterialStateProperty.all<Color>(sec2Color),
                 ),
               ),
-              // statusCode.signupStatusCode == 200
-              //     ? SnackBar(
-              //         content: const Text('Signup Successful!'),
-              //         backgroundColor: sec2Color,
-              //       )
-              //     : SnackBar(
-              //         content: const Text('Signup Failed!'),
-              //         backgroundColor: Theme.of(context).colorScheme.error,
-              //       ),
-              // statusCode.loginStatusCode == 200
-              //     ? SnackBar(
-              //         content: const Text('Login Successful!'),
-              //         backgroundColor: sec2Color,
-              //       )
-              //     : SnackBar(
-              //         content: const Text('Login Failed!'),
-              //         backgroundColor: Theme.of(context).colorScheme.error,
-              //       ),
             ],
           ),
         ),
