@@ -1,34 +1,61 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:http/http.dart' as http;
+import '../utils/shared_preferences.dart';
 import '../models/http_exception.dart';
 
 class Auth with ChangeNotifier {
-  late String _userId;
+  String? _userId;
+  DateTime? _expiryDate;
+  String? _token;
+  bool _canAuthRun = true;
+
+  bool get isAuth {
+    return _token != null;
+  }
+
+  String get token {
+    if (_expiryDate != null && _expiryDate!.isAfter(DateTime.now())) {
+      return UserPreferences.userToken;
+    }
+    _canAuthRun = false;
+    return '';
+  }
 
   Future<void> _authenticate(
       String email, String password, String urlSegment) async {
     final url = Uri.parse(urlSegment + "?key=" + FlutterConfig.get('API_KEY'));
 
-    try {
-      final response = await http.post(
-        url,
-        body: json.encode(
-          {
-            'email': email,
-            'password': password,
-            'returnSecureToken': true,
-          },
-        ),
-      );
-      final responseData = json.decode(response.body);
-      if (responseData['error'] != null) {
-        throw HttpException(responseData['error']['message']);
+    if (_canAuthRun) {
+      try {
+        final response = await http.post(
+          url,
+          body: json.encode(
+            {
+              'email': email,
+              'password': password,
+              'returnSecureToken': true,
+            },
+          ),
+        );
+        final responseData = json.decode(response.body);
+        log(response.statusCode.toString(), name: "Auth Status Code");
+        if (responseData['error'] != null) {
+          throw HttpException(responseData['error']['message']);
+        }
+        _token = responseData['idToken'];
+        _userId = responseData['localId'];
+        _expiryDate = DateTime.now()
+            .add(Duration(seconds: int.parse(responseData['expiresIn'])));
+        UserPreferences.setUserToken(_token!);
+        _canAuthRun = false;
+        notifyListeners();
+      } catch (error) {
+        throw HttpException(error.toString());
       }
-    } catch (error) {
-      throw HttpException(error.toString());
     }
   }
 
