@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
 import '../models/http_exception.dart';
+import '../utils/shared_preferences.dart';
 
 import './product.dart';
 
@@ -43,7 +44,7 @@ class Products with ChangeNotifier {
   // }
 
   final url = Uri.parse(
-      'https://shop-app-6baad-default-rtdb.firebaseio.com/products.json');
+      'https://shop-app-6baad-default-rtdb.firebaseio.com/products.json?auth=${UserPreferences().getUserToken}');
 
   Future<void> fetchAndSetProducts() async {
     final List<Product> loadedProducts = [];
@@ -125,7 +126,7 @@ class Products with ChangeNotifier {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
       final url = Uri.parse(
-          'https://shop-app-6baad-default-rtdb.firebaseio.com/products/$id.json');
+          'https://shop-app-6baad-default-rtdb.firebaseio.com/products/$id.json?auth=${UserPreferences().getUserToken}');
       // The ocde below is for getting the edit count.
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -151,7 +152,7 @@ class Products with ChangeNotifier {
     // It helps with rollback if the delete fails.
     // The  product to be deleted will be returned to the list of items and will be displayed.
     final url = Uri.parse(
-        'https://shop-app-6baad-default-rtdb.firebaseio.com/products/$id.json');
+        'https://shop-app-6baad-default-rtdb.firebaseio.com/products/$id.json?auth=${UserPreferences().getUserToken}');
     final existingProductIndex =
         _items.indexWhere((element) => element.id == id);
     Product? existingProduct = _items[existingProductIndex];

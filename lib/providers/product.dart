@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
+import '../utils/shared_preferences.dart';
+
 class Product with ChangeNotifier {
   final String? id;
   final String? title;
@@ -30,7 +32,7 @@ class Product with ChangeNotifier {
     isFavourite = !isFavourite;
     notifyListeners();
     final url = Uri.parse(
-        'https://shop-app-6baad-default-rtdb.firebaseio.com/products/$id.json');
+        'https://shop-app-6baad-default-rtdb.firebaseio.com/products/$id.json?auth=${UserPreferences().getUserToken}');
     try {
       final response = await http.patch(url,
           body: json.encode({

@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
 import 'cart.dart';
+import '../utils/shared_preferences.dart';
 
 class OrderItem {
   final String? id;
@@ -24,7 +25,7 @@ class OrderItem {
 class Orders with ChangeNotifier {
   List<OrderItem> _orders = [];
   final url = Uri.parse(
-      'https://shop-app-6baad-default-rtdb.firebaseio.com/orders.json');
+      'https://shop-app-6baad-default-rtdb.firebaseio.com/orders.json?auth=${UserPreferences().getUserToken}');
 
   List<OrderItem> get orders {
     return [..._orders];

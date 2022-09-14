@@ -201,6 +201,7 @@ class _AuthCardState extends State<AuthCard> {
                 onSaved: (value) {
                   _authData['password'] = value!;
                 },
+                textInputAction: _authMode == AuthMode.Signup ? TextInputAction.next : TextInputAction.done,
               ),
               if (_authMode == AuthMode.Signup)
                 TextFormField(
@@ -222,6 +223,7 @@ class _AuthCardState extends State<AuthCard> {
                           return null;
                         }
                       : null,
+                  textInputAction: TextInputAction.done,
                 ),
               const SizedBox(
                 height: 20,
