@@ -19,11 +19,20 @@ import './screens/orders_screen.dart';
 import './screens/product_detail_screen.dart';
 // import './screens/products_overview_screen.dart';
 import './screens/user_products_screen.dart';
+import './utils/shared_preferences.dart';
 
 void main() async {
+  // Required for FlutterConfig and Shared Preferences to work.
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Allows me to access the env file
   await FlutterConfig.loadEnvVariables();
 
+  // Initializes shared preferences
+  await UserPreferences.init();
+
+
+// This creates a temporary directory in the user's device for storing Firebase Credentials.
   final tempDir = await getTemporaryDirectory();
   final file = File('${tempDir.path}/service-account.json');
   final data = json.encode({
@@ -41,7 +50,8 @@ void main() async {
   });
   await file.writeAsString(data);
 
-  final app = FirebaseAdmin.instance.initializeApp(
+  // Initializing Firebase Admin to allow me to do CRUD operations to user data
+  FirebaseAdmin.instance.initializeApp(
     AppOptions(
       credential: FirebaseAdmin.instance.certFromPath(file.path),
     ),
@@ -89,7 +99,7 @@ class MyApp extends StatelessWidget {
                         ColorScheme.fromSwatch(primarySwatch: Colors.purple)
                             .copyWith(secondary: Colors.deepOrange)),
                 home: authData.isAuth
-                    ? const ProductsOverviewScreen( )
+                    ? const ProductsOverviewScreen()
                     : const AuthScreen(),
                 routes: {
                   ProductDetailScreen.routeName: (context) =>

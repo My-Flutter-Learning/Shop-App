@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -77,16 +78,16 @@ class Products with ChangeNotifier {
       final productsData = file.readAsStringSync();
       final localData = json.decode(productsData);
       localData.forEach((prodId, prodData) {
-          loadedProducts.add(Product(
-              id: prodId,
-              title: prodData['Title'],
-              description: prodData['Description'],
-              price: prodData['Price'],
-              imageUrl: prodData['Image Url'],
-              isFavourite: prodData['isFavourite']));
-        });
-        _items = loadedProducts;
-        notifyListeners();
+        loadedProducts.add(Product(
+            id: prodId,
+            title: prodData['Title'],
+            description: prodData['Description'],
+            price: prodData['Price'],
+            imageUrl: prodData['Image Url'],
+            isFavourite: prodData['isFavourite']));
+      });
+      _items = loadedProducts;
+      notifyListeners();
     }
   }
 
@@ -114,7 +115,8 @@ class Products with ChangeNotifier {
       // _items.insert(0, newProduct); // add at the beginning of the list
       notifyListeners();
     } catch (error) {
-      print(error);
+      // Prints error on log console
+      log(error.toString(), name: "Add Products", error: error);
       rethrow;
     }
   }

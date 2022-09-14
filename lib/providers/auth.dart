@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:http/http.dart' as http;
+import '../utils/shared_preferences.dart';
 import '../models/http_exception.dart';
 
 class Auth with ChangeNotifier {
@@ -12,14 +14,12 @@ class Auth with ChangeNotifier {
   bool _canAuthRun = true;
 
   bool get isAuth {
-    return token != null;
+    return _token != null;
   }
 
   String get token {
-    if (_expiryDate != null &&
-        _expiryDate!.isAfter(DateTime.now()) &&
-        _token != null) {
-      return _token!;
+    if (_expiryDate != null && _expiryDate!.isAfter(DateTime.now())) {
+      return UserPreferences.userToken;
     }
     _canAuthRun = false;
     return '';
@@ -42,6 +42,7 @@ class Auth with ChangeNotifier {
           ),
         );
         final responseData = json.decode(response.body);
+        log(response.statusCode.toString(), name: "Auth Status Code");
         if (responseData['error'] != null) {
           throw HttpException(responseData['error']['message']);
         }
@@ -49,6 +50,8 @@ class Auth with ChangeNotifier {
         _userId = responseData['localId'];
         _expiryDate = DateTime.now()
             .add(Duration(seconds: int.parse(responseData['expiresIn'])));
+        UserPreferences.setUserToken(_token!);
+        _canAuthRun = false;
         notifyListeners();
       } catch (error) {
         throw HttpException(error.toString());
@@ -57,12 +60,10 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> signup(String email, String password) async {
-    _canAuthRun = false;
     return _authenticate(email, password, FlutterConfig.get('signup_url'));
   }
 
   Future<void> login(String email, String password) async {
-    _canAuthRun = false;
     return _authenticate(email, password, FlutterConfig.get('login_url'));
   }
 }
