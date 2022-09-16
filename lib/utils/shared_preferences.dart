@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class UserPreferences {
   static SharedPreferences? _preferences;
   static const userToken = 'token';
+  static const userId = 'userid';
 
   static Future init() async {
     _preferences = await SharedPreferences.getInstance();
@@ -14,5 +15,13 @@ class UserPreferences {
 
   String get getUserToken {
     return _preferences!.getString(userToken)!;
+  }
+
+  static Future setUserId(String uId) async {
+    await _preferences!.setString(userId, uId);
+  }
+
+  String get getUserId {
+    return _preferences!.getString(userId)!;
   }
 }

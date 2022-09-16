@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
 
 import 'cart.dart';
 import '../utils/shared_preferences.dart';
@@ -33,38 +31,10 @@ class Orders with ChangeNotifier {
 
   Future<void> fetchAndSetOrders() async {
     final List<OrderItem> loadedOrders = [];
-    const String filename = "orders.json";
-    final dir = await getTemporaryDirectory();
-    File file = File(dir.path + "/" + filename);
-    if (!file.existsSync()) {
-      try {
-        final response = await http.get(url);
-        final extractedData =
-            json.decode(response.body) as Map<String, dynamic>;
-        extractedData.forEach((orderId, orderData) {
-          loadedOrders.add(OrderItem(
-            id: orderId,
-            amount: orderData['Amount'],
-            dateTime: DateTime.parse(orderData['DateTime']),
-            products: (orderData['Products'] as List<dynamic>)
-                .map((item) => CartItem(
-                    id: item['id'],
-                    title: item['Title'],
-                    quantity: item['Quantity'],
-                    price: item['Price']))
-                .toList(),
-          ));
-        });
-        _orders = loadedOrders.reversed.toList();
-        file.writeAsStringSync(json.encode(extractedData));
-        notifyListeners();
-      } catch (error) {
-        rethrow;
-      }
-    } else {
-      final ordersData = file.readAsStringSync();
-      final localData = json.decode(ordersData);
-      localData.forEach((orderId, orderData) {
+    try {
+      final response = await http.get(url);
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      extractedData.forEach((orderId, orderData) {
         loadedOrders.add(OrderItem(
           id: orderId,
           amount: orderData['Amount'],
@@ -77,9 +47,11 @@ class Orders with ChangeNotifier {
                   price: item['Price']))
               .toList(),
         ));
-        _orders = loadedOrders.reversed.toList();
-        notifyListeners();
       });
+      _orders = loadedOrders.reversed.toList();
+      notifyListeners();
+    } catch (error) {
+      rethrow;
     }
   }
 

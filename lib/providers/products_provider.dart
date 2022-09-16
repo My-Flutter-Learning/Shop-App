@@ -1,10 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
 
 import '../models/http_exception.dart';
 import '../utils/shared_preferences.dart';
@@ -48,47 +46,35 @@ class Products with ChangeNotifier {
 
   Future<void> fetchAndSetProducts() async {
     final List<Product> loadedProducts = [];
-    const String filename = "products.json";
-    final dir = await getTemporaryDirectory();
-    File file = File(dir.path + "/" + filename);
-    if (!file.existsSync()) {
-      try {
-        final response = await http.get(url);
-        final extractedData =
-            json.decode(response.body) as Map<String, dynamic>;
-        final List<Product> loadedProducts = [];
-        if (extractedData == null) {
-          return;
-        }
-        extractedData.forEach((prodId, prodData) {
-          loadedProducts.add(Product(
-              id: prodId,
-              title: prodData['Title'],
-              description: prodData['Description'],
-              price: prodData['Price'],
-              imageUrl: prodData['Image Url'],
-              isFavourite: prodData['isFavourite']));
-        });
-        _items = loadedProducts;
-        file.writeAsStringSync(json.encode(extractedData));
-        notifyListeners();
-      } catch (error) {
-        rethrow;
+    try {
+      final response = await http.get(url);
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      final List<Product> loadedProducts = [];
+      if (extractedData == null) {
+        return;
       }
-    } else {
-      final productsData = file.readAsStringSync();
-      final localData = json.decode(productsData);
-      localData.forEach((prodId, prodData) {
-        loadedProducts.add(Product(
+      final favouritesUrl = Uri.parse(
+          'https://shop-app-6baad-default-rtdb.firebaseio.com/userFavourites/${UserPreferences().getUserId}.json?auth=${UserPreferences().getUserToken}');
+      final favResponse = await http.get(favouritesUrl);
+      final favData = json.decode(favResponse.body);
+      extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(
+          Product(
             id: prodId,
             title: prodData['Title'],
             description: prodData['Description'],
             price: prodData['Price'],
             imageUrl: prodData['Image Url'],
-            isFavourite: prodData['isFavourite']));
+            isFavourite: favData[prodId] == null
+                ? false
+                : favData[prodId]['isFavourite'],
+          ),
+        );
       });
       _items = loadedProducts;
       notifyListeners();
+    } catch (error) {
+      rethrow;
     }
   }
 
@@ -100,7 +86,6 @@ class Products with ChangeNotifier {
             'Description': product.description,
             'Price': product.price,
             'Image Url': product.imageUrl,
-            'isFavourite': product.isFavourite,
             'Product Added': DateTime.now().toIso8601String(),
             'Product Edited': null,
             'Edit Count': editCount

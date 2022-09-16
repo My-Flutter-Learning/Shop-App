@@ -32,9 +32,9 @@ class Product with ChangeNotifier {
     isFavourite = !isFavourite;
     notifyListeners();
     final url = Uri.parse(
-        'https://shop-app-6baad-default-rtdb.firebaseio.com/products/$id.json?auth=${UserPreferences().getUserToken}');
+        'https://shop-app-6baad-default-rtdb.firebaseio.com/userFavourites/${UserPreferences().getUserId}/$id.json?auth=${UserPreferences().getUserToken}');
     try {
-      final response = await http.patch(url,
+      final response = await http.put(url,
           body: json.encode({
             'isFavourite': isFavourite,
           }));
