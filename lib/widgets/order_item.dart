@@ -15,19 +15,34 @@ class OrderItem extends StatefulWidget {
 
 class _OrderItemState extends State<OrderItem> {
   var _expanded = false;
+  bool sysTheme = ThemeData.light().useMaterial3;
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: sysTheme == true ? Colors.white : Colors.grey[800],
       margin: const EdgeInsets.all(10),
       child: Column(children: [
         ListTile(
-          title: Text('\$${widget.order.amount!.toStringAsFixed(2)}'),
-          subtitle: Text(DateFormat('dd MMMM, yyyy hh:mm a')
-              .format(widget.order.dateTime!)),
+          title: Text(
+            '\$${widget.order.amount!.toStringAsFixed(2)}',
+            style: TextStyle(
+                color: sysTheme == true ? Colors.black : Colors.white),
+          ),
+          subtitle: Text(
+            DateFormat('dd MMMM, yyyy hh:mm a').format(widget.order.dateTime!),
+            style: TextStyle(
+                color: sysTheme == true ? Colors.black : Colors.white),
+          ),
           trailing: IconButton(
             icon: _expanded
-                ? const Icon(Icons.expand_more)
-                : const Icon(Icons.expand_less),
+                ? Icon(
+                    Icons.expand_more,
+                    color: sysTheme == true ? Colors.black : Colors.white,
+                  )
+                : Icon(
+                    Icons.expand_less,
+                    color: sysTheme == true ? Colors.black : Colors.white,
+                  ),
             onPressed: () {
               setState(() {
                 _expanded = !_expanded;
@@ -49,9 +64,12 @@ class _OrderItemState extends State<OrderItem> {
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           child: Text(
                             prod.title!,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
+                              color: sysTheme == true
+                                  ? Colors.black
+                                  : Colors.white,
                             ),
                           ),
                         ),

@@ -14,8 +14,9 @@ class UserProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scaffold = ScaffoldMessenger.of(context);
+    bool sysTheme = ThemeData.light().useMaterial3;
     return ListTile(
-      title: Text(title),
+      title: Text(title, style: TextStyle(color: sysTheme == true ? Colors.black : Colors.white,),),
       leading: CircleAvatar(
         backgroundImage: NetworkImage(
             imageUrl), // fetches an image from its url. In this case, from the network.

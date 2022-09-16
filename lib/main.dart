@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:shop_app/screens/products_overview_screen.dart';
 import 'package:shop_app/utils/temp_storage.dart';
+import 'package:shop_app/utils/theme.dart';
 
 import './providers/auth.dart' as auth;
 import './providers/cart.dart';
@@ -66,10 +67,14 @@ class MyApp extends StatelessWidget {
           builder: ((context, authData, _) => MaterialApp(
                 title: 'Shop App',
                 theme: ThemeData(
-                    fontFamily: 'Lato,',
-                    colorScheme:
-                        ColorScheme.fromSwatch(primarySwatch: Colors.purple)
-                            .copyWith(secondary: Colors.deepOrange)),
+                  fontFamily: 'Lato,',
+                  colorScheme:
+                      ColorScheme.fromSwatch(primarySwatch: Colors.purple)
+                          .copyWith(secondary: Colors.deepOrange),
+                ),
+                themeMode: ThemeMode.system,
+                darkTheme: MyTheme.darkTheme,
+                
                 home: authData.isAuth
                     ? const ProductsOverviewScreen()
                     : const AuthScreen(),

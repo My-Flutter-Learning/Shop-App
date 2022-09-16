@@ -143,6 +143,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool sysTheme = ThemeData.light().useMaterial3;
     return Scaffold(
       appBar: AppBar(title: const Text('Edit Product')),
       body: _isLoading
@@ -177,6 +178,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         }
                         return null;
                       },
+                      style: TextStyle(
+                        color: sysTheme == true ? Colors.black : Colors.white,
+                      ),
                     ),
                     TextFormField(
                       initialValue: _initValues['price'],
@@ -210,6 +214,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         }
                         return null;
                       },
+                      style: TextStyle(
+                        color: sysTheme == true ? Colors.black : Colors.white,
+                      ),
                     ),
                     TextFormField(
                       initialValue: _initValues['description'],
@@ -236,6 +243,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         }
                         return null;
                       },
+                      style: TextStyle(
+                        color: sysTheme == true ? Colors.black : Colors.white,
+                      ),
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -247,9 +257,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           decoration: BoxDecoration(
                               border: Border.all(width: 1, color: Colors.grey)),
                           child: _imageUrlController.text.isEmpty
-                              ? const Text(
+                              ? Text(
                                   'Enter URL',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: sysTheme == true
+                                        ? Colors.black
+                                        : Colors.white,
+                                  ),
                                 )
                               : FittedBox(
                                   child: Container(
