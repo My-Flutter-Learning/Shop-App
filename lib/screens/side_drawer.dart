@@ -8,34 +8,49 @@ class SideDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool sysTheme = ThemeData.light().useMaterial3;
     return Drawer(
+      backgroundColor: sysTheme ? Colors.white : Colors.grey[900],
       child: Column(children: [
         AppBar(
-          title: const Text('Hello Friend!'),
+          title: Text(
+            'Hello Friend!',
+            style: TextStyle(color: sysTheme ? Colors.black : Colors.white),
+          ),
           automaticallyImplyLeading: false,
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(Icons.shop),
-          title: const Text('Shop'),
+          leading: Icon(Icons.shop, color: sysTheme == true ? Colors.black : Colors.white,),
+          title: Text(
+            'Shop',
+            style: TextStyle(color: sysTheme ? Colors.black : Colors.white),
+          ),
           onTap: () {
             Navigator.of(context).pushReplacementNamed('/');
           },
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(Icons.credit_card),
-          title: const Text('Orders'),
+          leading: Icon(Icons.credit_card, color: sysTheme == true ? Colors.black : Colors.white,),
+          title: Text(
+            'Orders',
+            style: TextStyle(color: sysTheme ? Colors.black : Colors.white),
+          ),
           onTap: () {
             Navigator.of(context).pushReplacementNamed(OrdersScreen.routeName);
           },
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(Icons.edit),
-          title: const Text('Manage Products'),
+          leading: Icon(Icons.edit, color: sysTheme == true ? Colors.black : Colors.white,),
+          title: Text(
+            'Manage Products',
+            style: TextStyle(color: sysTheme ? Colors.black : Colors.white),
+          ),
           onTap: () {
-            Navigator.of(context).pushReplacementNamed(UserProductsScreen.routeName);
+            Navigator.of(context)
+                .pushReplacementNamed(UserProductsScreen.routeName);
           },
         )
       ]),

@@ -316,6 +316,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               }
                               return null;
                             },
+                            style: TextStyle(color: sysTheme ? Colors.black : Colors.white),
                           ),
                         ),
                       ],

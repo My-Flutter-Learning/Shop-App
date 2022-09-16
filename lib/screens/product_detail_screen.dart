@@ -10,6 +10,7 @@ class ProductDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool sysTheme = ThemeData.light().useMaterial3;
     final productId = ModalRoute.of(context)!.settings.arguments as String;
     final loadedProduct =
         Provider.of<Products>(context, listen: false).findById(productId);
@@ -32,8 +33,8 @@ class ProductDetailScreen extends StatelessWidget {
             ),
             Text(
               '\$${loadedProduct.price}',
-              style: const TextStyle(
-                color: Colors.grey,
+              style: TextStyle(
+                color: sysTheme ? Colors.grey : Colors.grey[350],
                 fontSize: 20,
               ),
             ),
@@ -41,13 +42,15 @@ class ProductDetailScreen extends StatelessWidget {
               height: 10,
             ),
             Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                width: double.infinity,
-                child: Text(
-                  loadedProduct.description!,
-                  textAlign: TextAlign.center,
-                  softWrap: true,
-                ))
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              width: double.infinity,
+              child: Text(
+                loadedProduct.description!,
+                textAlign: TextAlign.center,
+                softWrap: true,
+                style: TextStyle(color: sysTheme ? Colors.black : Colors.white),
+              ),
+            )
           ],
         ),
       ),

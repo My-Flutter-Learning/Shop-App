@@ -15,8 +15,66 @@ class UserProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final scaffold = ScaffoldMessenger.of(context);
     bool sysTheme = ThemeData.light().useMaterial3;
+
+    void _showDialog() {
+      showDialog(
+        context: context,
+        builder: ((context) => AlertDialog(
+              backgroundColor: sysTheme ? Colors.white : Colors.grey[800],
+              title: Text(
+                'Delete this item',
+                style: TextStyle(color: sysTheme ? Colors.black : Colors.white),
+              ),
+              content: Text(
+                'You are about to delete this item. Are you sure?',
+                style: TextStyle(color: sysTheme ? Colors.black : Colors.white),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () async {
+                    try {
+                      await Provider.of<Products>(context, listen: false)
+                          .deleteProduct(id);
+                      scaffold.showSnackBar(SnackBar(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          content:
+                              const Text('Product deleted successfully!')));
+                      Navigator.of(context).pop();
+                    } catch (error) {
+                      scaffold.showSnackBar(SnackBar(
+                        backgroundColor: Theme.of(context).colorScheme.error,
+                        content: const Text('Deleting failed!'),
+                      ));
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  child: Text(
+                    'Delete',
+                    style: TextStyle(color: Colors.red[900]),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      color: sysTheme == true ? Colors.black : Colors.white,
+                    ),
+                  ),
+                )
+              ],
+            )),
+      );
+    }
+
     return ListTile(
-      title: Text(title, style: TextStyle(color: sysTheme == true ? Colors.black : Colors.white,),),
+      title: Text(
+        title,
+        style: TextStyle(
+          color: sysTheme == true ? Colors.black : Colors.white,
+        ),
+      ),
       leading: CircleAvatar(
         backgroundImage: NetworkImage(
             imageUrl), // fetches an image from its url. In this case, from the network.
@@ -35,20 +93,7 @@ class UserProductItem extends StatelessWidget {
                   color: Theme.of(context).colorScheme.primary,
                 )),
             IconButton(
-                onPressed: () async {
-                  try {
-                    await Provider.of<Products>(context, listen: false)
-                        .deleteProduct(id);
-                    scaffold.showSnackBar(SnackBar(
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        content: const Text('Product deleted successfully!')));
-                  } catch (error) {
-                    scaffold.showSnackBar(SnackBar(
-                      backgroundColor: Theme.of(context).colorScheme.error,
-                      content: const Text('Deleting failed!'),
-                    ));
-                  }
-                },
+                onPressed: _showDialog,
                 icon: Icon(
                   Icons.delete,
                   color: Theme.of(context).errorColor,
