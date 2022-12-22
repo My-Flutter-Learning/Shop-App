@@ -8,23 +8,26 @@ class SideDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool sysTheme = ThemeData.light().useMaterial3;
+    Color sec2Color = const Color.fromARGB(255, 50, 128, 52);
     return Drawer(
-      backgroundColor: sysTheme ? Colors.white : Colors.grey[900],
+      backgroundColor: Colors.white,
       child: Column(children: [
         AppBar(
-          title: Text(
+          backgroundColor: Colors.white,
+          elevation: 1,
+          toolbarHeight: 150,
+          title: const Text(
             'Hello Friend!',
-            style: TextStyle(color: sysTheme ? Colors.black : Colors.white),
+            style: TextStyle(color: Colors.black),
           ),
           automaticallyImplyLeading: false,
         ),
         const Divider(),
         ListTile(
-          leading: Icon(Icons.shop, color: sysTheme == true ? Colors.black : Colors.white,),
+          leading: Icon(Icons.shop, color: sec2Color),
           title: Text(
             'Shop',
-            style: TextStyle(color: sysTheme ? Colors.black : Colors.white),
+            style: TextStyle(color: sec2Color),
           ),
           onTap: () {
             Navigator.of(context).pushReplacementNamed('/');
@@ -32,10 +35,13 @@ class SideDrawer extends StatelessWidget {
         ),
         const Divider(),
         ListTile(
-          leading: Icon(Icons.credit_card, color: sysTheme == true ? Colors.black : Colors.white,),
+          leading: Icon(
+            Icons.credit_card,
+            color: sec2Color,
+          ),
           title: Text(
             'Orders',
-            style: TextStyle(color: sysTheme ? Colors.black : Colors.white),
+            style: TextStyle(color: sec2Color),
           ),
           onTap: () {
             Navigator.of(context).pushReplacementNamed(OrdersScreen.routeName);
@@ -43,10 +49,13 @@ class SideDrawer extends StatelessWidget {
         ),
         const Divider(),
         ListTile(
-          leading: Icon(Icons.edit, color: sysTheme == true ? Colors.black : Colors.white,),
+          leading: Icon(
+            Icons.edit,
+            color: sec2Color,
+          ),
           title: Text(
             'Manage Products',
-            style: TextStyle(color: sysTheme ? Colors.black : Colors.white),
+            style: TextStyle(color: sec2Color),
           ),
           onTap: () {
             Navigator.of(context)

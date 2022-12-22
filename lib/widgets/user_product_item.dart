@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/products_provider.dart';
+import 'package:shop_app/screens/auth_screen.dart';
 import 'package:shop_app/screens/edit_products_screen.dart';
 
 class UserProductItem extends StatelessWidget {
@@ -33,7 +34,7 @@ class UserProductItem extends StatelessWidget {
                 TextButton(
                   onPressed: () async {
                     try {
-                      await Provider.of<Products>(context, listen: false)
+                      await Provider.of<ProductsProvider>(context, listen: false)
                           .deleteProduct(id);
                       scaffold.showSnackBar(SnackBar(
                           backgroundColor:
@@ -71,8 +72,8 @@ class UserProductItem extends StatelessWidget {
     return ListTile(
       title: Text(
         title,
-        style: TextStyle(
-          color: sysTheme == true ? Colors.black : Colors.white,
+        style: const TextStyle(
+          color: Colors.black,
         ),
       ),
       leading: CircleAvatar(
@@ -90,13 +91,13 @@ class UserProductItem extends StatelessWidget {
                 },
                 icon: Icon(
                   Icons.edit,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: sec2Color,
                 )),
             IconButton(
                 onPressed: _showDialog,
                 icon: Icon(
                   Icons.delete,
-                  color: Theme.of(context).errorColor,
+                  color: Colors.grey[600],
                 ))
           ],
         ),

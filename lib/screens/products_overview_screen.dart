@@ -12,6 +12,9 @@ import '../screens/side_drawer.dart';
 
 enum FilterOptions { Favourites, All }
 
+Color secColor = const Color.fromARGB(255, 99, 255, 105);
+Color sec2Color = const Color.fromARGB(255, 50, 128, 52);
+
 class ProductsOverviewScreen extends StatefulWidget {
   const ProductsOverviewScreen({Key? key}) : super(key: key);
 
@@ -40,7 +43,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<Products>(context).fetchAndSetProducts().then((_) {
+      Provider.of<ProductsProvider>(context).fetchAndSetProducts().then((_) {
         setState(() {
           _isLoading = false;
         });
@@ -55,7 +58,14 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('MyShop'),
+        elevation: 0,
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        title: Text(
+          'MyShop',
+          style: TextStyle(color: sec2Color),
+        ),
+        iconTheme: IconThemeData(color: sec2Color),
         actions: <Widget>[
           PopupMenuButton(
               onSelected: (FilterOptions selectedValue) {
@@ -81,7 +91,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
             builder: (_, cartData, ch) => Badge(
               value: cartData.itemCount.toString(),
               child: ch,
-              color: Theme.of(context).colorScheme.secondary,
+              color: sec2Color,
             ),
             child: IconButton(
                 icon: const Icon(Icons.shopping_cart),

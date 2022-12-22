@@ -14,7 +14,6 @@ import './screens/cart_screen.dart';
 import './screens/edit_products_screen.dart';
 import './screens/orders_screen.dart';
 import './screens/product_detail_screen.dart';
-// import './screens/products_overview_screen.dart';
 import './screens/user_products_screen.dart';
 import './utils/shared_preferences.dart';
 
@@ -54,7 +53,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
             /*This approach shuld be used when creating an new instance of an object
         and you want to provide it to other widgets*/
-            create: (context) => Products(),
+            create: (context) => ProductsProvider(),
           ),
           ChangeNotifierProvider(
             create: (context) => Cart(),
@@ -73,7 +72,7 @@ class MyApp extends StatelessWidget {
                           .copyWith(secondary: Colors.deepOrange),
                 ),
                 themeMode: ThemeMode.system,
-                darkTheme: MyTheme.darkTheme,
+                // darkTheme: MyTheme.darkTheme,
                 
                 home: authData.isAuth
                     ? const ProductsOverviewScreen()

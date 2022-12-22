@@ -10,12 +10,22 @@ class ProductDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color sec2Color = const Color.fromARGB(255, 50, 128, 52);
     bool sysTheme = ThemeData.light().useMaterial3;
     final productId = ModalRoute.of(context)!.settings.arguments as String;
-    final loadedProduct =
-        Provider.of<Products>(context, listen: false).findById(productId);
+    final loadedProduct = Provider.of<ProductsProvider>(context, listen: false)
+        .findById(productId);
     return Scaffold(
-      appBar: AppBar(title: Text(loadedProduct.title!)),
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: sec2Color),
+        title: Text(
+          loadedProduct.title!,
+          style: TextStyle(color: sec2Color),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -33,8 +43,8 @@ class ProductDetailScreen extends StatelessWidget {
             ),
             Text(
               '\$${loadedProduct.price}',
-              style: TextStyle(
-                color: sysTheme ? Colors.grey : Colors.grey[350],
+              style: const TextStyle(
+                color: Colors.black,
                 fontSize: 20,
               ),
             ),

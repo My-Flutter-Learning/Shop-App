@@ -45,7 +45,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
     if (_isInit) {
       final productId = ModalRoute.of(context)!.settings.arguments as String;
       if (productId != 'newProduct') {
-        _editedProduct = Provider.of<Products>(context).findById(productId);
+        _editedProduct =
+            Provider.of<ProductsProvider>(context).findById(productId);
         _initValues = {
           'title': _editedProduct.title!,
           'description': _editedProduct.description!,
@@ -95,7 +96,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
       _isLoading = true;
     });
     if (_editedProduct.id != null) {
-      await Provider.of<Products>(context, listen: false)
+      await Provider.of<ProductsProvider>(context, listen: false)
           .updateProduct(_editedProduct.id!, _editedProduct);
 
       setState(() {
@@ -109,7 +110,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
       Navigator.of(context).pop();
     } else {
       try {
-        await Provider.of<Products>(context, listen: false)
+        await Provider.of<ProductsProvider>(context, listen: false)
             .addProducts(_editedProduct);
       } catch (error) {
         _isDialogShown = true;
@@ -143,9 +144,20 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Color sec2Color = const Color.fromARGB(255, 50, 128, 52);
     bool sysTheme = ThemeData.light().useMaterial3;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Edit Product')),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        elevation: 0,
+        iconTheme: IconThemeData(color: sec2Color),
+        title: Text(
+          'Edit Product',
+          style: TextStyle(color: sec2Color),
+        ),
+      ),
       body: _isLoading
           ? const LoadingSpinner(
               text: 'Loading...',
@@ -316,7 +328,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               }
                               return null;
                             },
-                            style: TextStyle(color: sysTheme ? Colors.black : Colors.white),
+                            style: TextStyle(
+                                color: sysTheme ? Colors.black : Colors.white),
                           ),
                         ),
                       ],
@@ -325,7 +338,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     SizedBox(
                       width: 125,
                       child: ElevatedButton(
-                          onPressed: _saveForm, child: const Text('Save')),
+                        onPressed: _saveForm,
+                        child: const Text('Save'),
+                        style: ElevatedButton.styleFrom(backgroundColor: sec2Color),
+                      ),
                     ),
                   ]),
                 ),

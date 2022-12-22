@@ -9,7 +9,7 @@ import '../utils/shared_preferences.dart';
 
 import './product.dart';
 
-class Products with ChangeNotifier {
+class ProductsProvider with ChangeNotifier {
   List<Product> _items = [];
 
   var _showFavouritesonly = false;
@@ -40,15 +40,14 @@ class Products with ChangeNotifier {
   //   _showFavouritesonly = false;
   //   notifyListeners();
   // }
-
   final url = Uri.parse(
       'https://shop-app-6baad-default-rtdb.firebaseio.com/products.json?auth=${UserPreferences().getUserToken}');
 
   Future<void> fetchAndSetProducts() async {
-    final List<Product> loadedProducts = [];
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      log(extractedData.toString());
       final List<Product> loadedProducts = [];
       if (extractedData == null) {
         return;
@@ -65,13 +64,24 @@ class Products with ChangeNotifier {
             description: prodData['Description'],
             price: prodData['Price'],
             imageUrl: prodData['Image Url'],
-            isFavourite: favData[prodId] == null
-                ? false
-                : favData[prodId]['isFavourite'],
+            isFavourite: favData == null ? false : favData[prodId]['isFavourite'],
           ),
         );
+        // loadedProducts.add(
+        //   Product(
+        //     id: prodId,
+        //     title: prodData['Title'],
+        //     description: prodData['Description'],
+        //     price: prodData['Price'],
+        //     imageUrl: prodData['Image Url'],
+        //     isFavourite: favData[prodId] == null
+        //         ? false
+        //         : favData[prodId]['isFavourite'],
+        //   ),
+        // );
       });
       _items = loadedProducts;
+
       notifyListeners();
     } catch (error) {
       rethrow;
@@ -88,7 +98,8 @@ class Products with ChangeNotifier {
             'Image Url': product.imageUrl,
             'Product Added': DateTime.now().toIso8601String(),
             'Product Edited': null,
-            'Edit Count': editCount
+            'Edit Count': editCount,
+            'creatorId': UserPreferences().getUserId,
           }));
 
       final newProduct = Product(

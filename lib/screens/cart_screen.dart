@@ -11,9 +11,19 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color sec2Color = const Color.fromARGB(255, 50, 128, 52);
     final cart = Provider.of<Cart>(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Your Cart')),
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: sec2Color),
+        title: Text(
+          'Your Cart',
+          style: TextStyle(color: sec2Color),
+        ),
+      ),
       body: Column(children: [
         Card(
           margin: const EdgeInsets.all(15),
@@ -36,7 +46,7 @@ class CartScreen extends StatelessWidget {
                             .titleLarge!
                             .color),
                   ),
-                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  backgroundColor: sec2Color,
                 ),
                 OrderButton(cart: cart)
               ],
@@ -91,6 +101,8 @@ class _OrderButtonState extends State<OrderButton> {
                 });
                 widget.cart.clearCart();
               },
-        child:_isLoading ? const CircularProgressIndicator(): const Text('ORDER NOW'));
+        child: _isLoading
+            ? const CircularProgressIndicator()
+            : const Text('ORDER NOW'));
   }
 }
