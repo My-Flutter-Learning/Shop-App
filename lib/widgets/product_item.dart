@@ -13,6 +13,7 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color secColor = const Color.fromARGB(255, 99, 255, 105);
     final product = Provider.of<Product>(context, listen: false);
     final cart = Provider.of<Cart>(context,
         listen:
@@ -41,7 +42,7 @@ class ProductItem extends StatelessWidget {
             builder: (context, product, _) => IconButton(
               icon: Icon(
                   product.isFavourite ? Icons.favorite : Icons.favorite_border,
-                  color: Theme.of(context).colorScheme.secondary),
+                  color: secColor),
               onPressed: () {
                 product.toggleFavouriteStatus();
               },
@@ -53,7 +54,7 @@ class ProductItem extends StatelessWidget {
           ),
           trailing: IconButton(
             icon: Icon(Icons.shopping_cart,
-                color: Theme.of(context).colorScheme.secondary),
+                color: secColor),
             onPressed: () {
               cart.addItem(product.id!, product.price!, product.title!);
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
