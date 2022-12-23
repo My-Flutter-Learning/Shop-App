@@ -16,6 +16,7 @@ Color secColor = const Color.fromARGB(255, 99, 255, 105);
 Color sec2Color = const Color.fromARGB(255, 50, 128, 52);
 
 class ProductsOverviewScreen extends StatefulWidget {
+  static const routeName = '/productsOverviewScreen';
   const ProductsOverviewScreen({Key? key}) : super(key: key);
 
   @override

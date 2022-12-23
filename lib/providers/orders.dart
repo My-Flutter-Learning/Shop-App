@@ -23,7 +23,7 @@ class OrderItem {
 class Orders with ChangeNotifier {
   List<OrderItem> _orders = [];
   final url = Uri.parse(
-      'https://shop-app-6baad-default-rtdb.firebaseio.com/orders.json?auth=${UserPreferences().getUserToken}');
+      'https://shop-app-6baad-default-rtdb.firebaseio.com/orders/${UserPreferences().getUserId}.json?auth=${UserPreferences().getUserToken}');
 
   List<OrderItem> get orders {
     return [..._orders];

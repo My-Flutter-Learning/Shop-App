@@ -73,7 +73,7 @@ class _OrderItemState extends State<OrderItem> {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4),
                           child: Text(
-                            '${prod.quantity!} x \$${prod.price!}',
+                            '${prod.quantity!} x \$${prod.price!.toStringAsFixed(2)}',
                             style: const TextStyle(
                               fontSize: 18,
                               color: Colors.grey,

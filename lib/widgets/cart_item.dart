@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../providers/cart.dart' as pc;
+import '../screens/auth_screen.dart';
 
 class CartItem extends StatelessWidget {
   final String? id;
@@ -51,7 +53,10 @@ class CartItem extends StatelessWidget {
                           onPressed: () {
                             Navigator.of(ctx).pop(true);
                           },
-                          child: const Text('Delete', style: TextStyle(color: Colors.red),),
+                          child: const Text(
+                            'Delete',
+                            style: TextStyle(color: Colors.red),
+                          ),
                         ),
                       ],
                     )
@@ -62,6 +67,7 @@ class CartItem extends StatelessWidget {
         Provider.of<pc.Cart>(context, listen: false).removeItem(productId!);
       },
       child: Card(
+        elevation: 10,
         margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
         child: Padding(
           padding: const EdgeInsets.all(8),
@@ -69,9 +75,14 @@ class CartItem extends StatelessWidget {
             leading: CircleAvatar(
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
-                child: FittedBox(child: Text('\$$price')),
+                child: FittedBox(
+                  child: Text(
+                    '\$${price!.toStringAsFixed(2)}',
+                    style: TextStyle(color: sec2Color),
+                  ),
+                ),
               ),
-              backgroundColor: Theme.of(context).primaryColor,
+              backgroundColor: baseColor,
             ),
             title: Text(title!),
             subtitle: Text('Total: \$${(price! * quantity!)}'),

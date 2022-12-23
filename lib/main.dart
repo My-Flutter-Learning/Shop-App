@@ -72,11 +72,13 @@ class MyApp extends StatelessWidget {
                 ),
                 themeMode: ThemeMode.system,
                 // darkTheme: MyTheme.darkTheme,
-                
+
                 home: authData.isAuth
                     ? const ProductsOverviewScreen()
                     : const AuthScreen(),
                 routes: {
+                  ProductsOverviewScreen.routeName: (context) =>
+                      const ProductsOverviewScreen(),
                   ProductDetailScreen.routeName: (context) =>
                       const ProductDetailScreen(),
                   CartScreen.routeName: ((context) => const CartScreen()),

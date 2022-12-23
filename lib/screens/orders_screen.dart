@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/screens/products_overview_screen.dart';
 // import 'package:shop_app/widgets/bottom_navbar.dart';
 
 import '../providers/orders.dart' show Orders;
@@ -53,8 +56,37 @@ class _OrdersScreenState extends State<OrdersScreen> {
               );
             }
             if (dataSnapshot.error != null) {
-              return const Center(
-                child: Text('An error occurred'),
+              log("Orders_Screen: " + dataSnapshot.error.toString());
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.list_alt,
+                      color: Colors.grey,
+                      size: 50,
+                    ),
+                    Text(
+                      'No orders',
+                      style: TextStyle(color: Colors.grey[600], fontSize: 20),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ElevatedButton(
+                      onPressed: (() => Navigator.of(context)
+                          .pushNamed(ProductsOverviewScreen.routeName)),
+                      child: const Text('Create One'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: sec2Color,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                      ),
+                    ),
+                  ],
+                ),
               );
             } else {
               return Consumer<Orders>(

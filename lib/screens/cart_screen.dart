@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/orders.dart';
+import 'package:shop_app/screens/auth_screen.dart';
 import '../providers/cart.dart' show Cart;
 import '../widgets/cart_item.dart';
 
@@ -26,6 +27,7 @@ class CartScreen extends StatelessWidget {
       ),
       body: Column(children: [
         Card(
+          elevation: 5,
           margin: const EdgeInsets.all(15),
           child: Padding(
             padding: const EdgeInsets.all(8),
@@ -102,7 +104,7 @@ class _OrderButtonState extends State<OrderButton> {
                 widget.cart.clearCart();
               },
         child: _isLoading
-            ? const CircularProgressIndicator()
-            : const Text('ORDER NOW'));
+            ? CircularProgressIndicator(color: sec2Color,)
+            : Text('ORDER NOW', style: TextStyle(color: sec2Color),));
   }
 }
