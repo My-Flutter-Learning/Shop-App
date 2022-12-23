@@ -201,7 +201,9 @@ class _AuthCardState extends State<AuthCard> {
                 onSaved: (value) {
                   _authData['password'] = value!;
                 },
-                textInputAction: _authMode == AuthMode.Signup ? TextInputAction.next : TextInputAction.done,
+                textInputAction: _authMode == AuthMode.Signup
+                    ? TextInputAction.next
+                    : TextInputAction.done,
               ),
               if (_authMode == AuthMode.Signup)
                 TextFormField(
@@ -235,30 +237,28 @@ class _AuthCardState extends State<AuthCard> {
                   child:
                       Text(_authMode == AuthMode.Login ? 'Login' : 'Sign up'),
                   onPressed: _submit,
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
                     ),
-                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                      const EdgeInsets.symmetric(
-                          horizontal: 30.0, vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 30.0,
+                      vertical: 8.0,
                     ),
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(sec2Color),
+                    backgroundColor: sec2Color,
                   ),
                 ),
               TextButton(
                 child: Text(
                     '${_authMode == AuthMode.Login ? 'Sign up' : 'Login'} instead'),
                 onPressed: _switchAuthMode,
-                style: ButtonStyle(
-                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                    const EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30.0,
+                    vertical: 4.0,
                   ),
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  foregroundColor: MaterialStateProperty.all<Color>(sec2Color),
+                  foregroundColor: sec2Color,
                 ),
               ),
             ],
