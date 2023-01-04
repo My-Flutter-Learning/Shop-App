@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/orders.dart';
-import 'package:shop_app/screens/auth_screen.dart';
+
 import '../providers/cart.dart' show Cart;
 import '../widgets/cart_item.dart';
+import '../utils/theme.dart';
 
 class CartScreen extends StatelessWidget {
   static const routeName = '/cart';
@@ -12,17 +13,16 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color sec2Color = const Color.fromARGB(255, 50, 128, 52);
     final cart = Provider.of<Cart>(context);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
         backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: sec2Color),
-        title: Text(
+        iconTheme: const IconThemeData(color: MyTheme.sec2Color),
+        title: const Text(
           'Your Cart',
-          style: TextStyle(color: sec2Color),
+          style: TextStyle(color: MyTheme.sec2Color),
         ),
       ),
       body: Column(children: [
@@ -48,7 +48,7 @@ class CartScreen extends StatelessWidget {
                             .titleLarge!
                             .color),
                   ),
-                  backgroundColor: sec2Color,
+                  backgroundColor: MyTheme.sec2Color,
                 ),
                 OrderButton(cart: cart)
               ],
@@ -104,7 +104,12 @@ class _OrderButtonState extends State<OrderButton> {
                 widget.cart.clearCart();
               },
         child: _isLoading
-            ? CircularProgressIndicator(color: sec2Color,)
-            : Text('ORDER NOW', style: TextStyle(color: sec2Color),));
+            ? const CircularProgressIndicator(
+                color: MyTheme.sec2Color,
+              )
+            : const Text(
+                'ORDER NOW',
+                style: TextStyle(color: MyTheme.sec2Color),
+              ));
   }
 }

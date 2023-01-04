@@ -4,12 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/http_exception.dart';
 import '../providers/auth.dart';
+import '../utils/theme.dart';
 
 enum AuthMode { Signup, Login }
-
-Color baseColor = const Color.fromARGB(255, 174, 253, 177);
-Color secColor = const Color.fromARGB(255, 99, 255, 105);
-Color sec2Color = const Color.fromARGB(255, 50, 128, 52);
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -22,7 +19,7 @@ class AuthScreen extends StatelessWidget {
       body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(color: baseColor),
+            decoration: const BoxDecoration(color: MyTheme.baseColor),
           ),
           SingleChildScrollView(
             child: SizedBox(
@@ -37,12 +34,12 @@ class AuthScreen extends StatelessWidget {
                       margin: const EdgeInsets.only(bottom: 20.0),
                       padding: const EdgeInsets.symmetric(
                           vertical: 8.0, horizontal: 94.0),
-                      child: Text(
+                      child: const Text(
                         'My Shop',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           // TO DO: make this color a bit dark
-                          color: sec2Color,
+                          color: MyTheme.sec2Color,
                           fontSize: 50,
                           fontFamily: 'MultiDisplay',
                           fontWeight: FontWeight.w500,
@@ -115,8 +112,7 @@ class _AuthCardState extends State<AuthCard> {
       }
     } catch (error) {
       log(error.toString(), name: "Auth Error");
-      errorMessage =
-          'Could not authenticate you. Please try again later.';
+      errorMessage = 'Could not authenticate you. Please try again later.';
     }
     setState(() {
       _isLoading = false;
@@ -151,12 +147,12 @@ class _AuthCardState extends State<AuthCard> {
           child: Column(
             children: [
               TextFormField(
-                cursorColor: sec2Color,
-                decoration: InputDecoration(
+                cursorColor: MyTheme.sec2Color,
+                decoration: const InputDecoration(
                   labelText: 'E-Mail',
-                  labelStyle: TextStyle(color: sec2Color),
+                  labelStyle: TextStyle(color: MyTheme.sec2Color),
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: sec2Color),
+                    borderSide: BorderSide(color: MyTheme.sec2Color),
                   ),
                 ),
                 keyboardType: TextInputType.emailAddress,
@@ -171,12 +167,12 @@ class _AuthCardState extends State<AuthCard> {
                 },
               ),
               TextFormField(
-                cursorColor: sec2Color,
-                decoration: InputDecoration(
+                cursorColor: MyTheme.sec2Color,
+                decoration: const InputDecoration(
                   labelText: 'Password',
-                  labelStyle: TextStyle(color: sec2Color),
+                  labelStyle: TextStyle(color: MyTheme.sec2Color),
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: sec2Color),
+                    borderSide: BorderSide(color: MyTheme.sec2Color),
                   ),
                 ),
                 obscureText: true,
@@ -197,12 +193,12 @@ class _AuthCardState extends State<AuthCard> {
               if (_authMode == AuthMode.Signup)
                 TextFormField(
                   enabled: _authMode == AuthMode.Signup,
-                  cursorColor: sec2Color,
-                  decoration: InputDecoration(
+                  cursorColor: MyTheme.sec2Color,
+                  decoration: const InputDecoration(
                     labelText: 'Confirm Password',
-                    labelStyle: TextStyle(color: sec2Color),
+                    labelStyle: TextStyle(color: MyTheme.sec2Color),
                     focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: sec2Color),
+                      borderSide: BorderSide(color: MyTheme.sec2Color),
                     ),
                   ),
                   obscureText: true,
@@ -220,7 +216,7 @@ class _AuthCardState extends State<AuthCard> {
                 height: 20,
               ),
               if (_isLoading)
-                CircularProgressIndicator(color: sec2Color)
+                const CircularProgressIndicator(color: MyTheme.sec2Color)
               else
                 ElevatedButton(
                   child:
@@ -234,7 +230,7 @@ class _AuthCardState extends State<AuthCard> {
                       horizontal: 30.0,
                       vertical: 8.0,
                     ),
-                    backgroundColor: sec2Color,
+                    backgroundColor: MyTheme.sec2Color,
                   ),
                 ),
               TextButton(
@@ -247,7 +243,7 @@ class _AuthCardState extends State<AuthCard> {
                     vertical: 4.0,
                   ),
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  foregroundColor: sec2Color,
+                  foregroundColor: MyTheme.sec2Color,
                 ),
               ),
               const SizedBox(

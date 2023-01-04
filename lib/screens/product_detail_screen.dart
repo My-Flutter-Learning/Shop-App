@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/products_provider.dart';
+import '../utils/theme.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   static const routeName = '/productdetail';
@@ -10,7 +11,6 @@ class ProductDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color sec2Color = const Color.fromARGB(255, 50, 128, 52);
     bool sysTheme = ThemeData.light().useMaterial3;
     final productId = ModalRoute.of(context)!.settings.arguments as String;
     final loadedProduct = Provider.of<ProductsProvider>(context, listen: false)
@@ -20,10 +20,10 @@ class ProductDetailScreen extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: sec2Color),
+        iconTheme: const IconThemeData(color: MyTheme.sec2Color),
         title: Text(
           loadedProduct.title!,
-          style: TextStyle(color: sec2Color),
+          style: const TextStyle(color: MyTheme.sec2Color),
         ),
       ),
       body: SingleChildScrollView(

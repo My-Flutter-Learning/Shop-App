@@ -9,6 +9,7 @@ import '../providers/orders.dart' show Orders;
 import '../widgets/loading_spinner.dart';
 import '../widgets/order_item.dart';
 import '../screens/side_drawer.dart';
+import '../utils/theme.dart';
 
 class OrdersScreen extends StatefulWidget {
   static const routeName = '/orders';
@@ -34,16 +35,15 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Color sec2Color = const Color.fromARGB(255, 50, 128, 52);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
         elevation: 0,
-        iconTheme: IconThemeData(color: sec2Color),
-        title: Text(
+        iconTheme: const IconThemeData(color: MyTheme.sec2Color),
+        title: const Text(
           'Your Orders',
-          style: TextStyle(color: sec2Color),
+          style: TextStyle(color: MyTheme.sec2Color),
         ),
       ),
       drawer: const SideDrawer(),
@@ -78,7 +78,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                           .pushNamed(ProductsOverviewScreen.routeName)),
                       child: const Text('Create One'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: sec2Color,
+                        backgroundColor: MyTheme.sec2Color,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),

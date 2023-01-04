@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/product.dart';
 import '../providers/products_provider.dart';
 import '../widgets/loading_spinner.dart';
+import '../utils/theme.dart';
 
 class EditProductScreen extends StatefulWidget {
   static const routeName = '/edit-screen';
@@ -144,7 +145,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Color sec2Color = const Color.fromARGB(255, 50, 128, 52);
     bool sysTheme = ThemeData.light().useMaterial3;
 
     return Scaffold(
@@ -152,10 +152,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
         backgroundColor: Colors.white,
         centerTitle: true,
         elevation: 0,
-        iconTheme: IconThemeData(color: sec2Color),
-        title: Text(
+        iconTheme: const IconThemeData(color: MyTheme.sec2Color),
+        title: const Text(
           'Edit Product',
-          style: TextStyle(color: sec2Color),
+          style: TextStyle(color: MyTheme.sec2Color),
         ),
       ),
       body: _isLoading
@@ -340,7 +340,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       child: ElevatedButton(
                         onPressed: _saveForm,
                         child: const Text('Save'),
-                        style: ElevatedButton.styleFrom(backgroundColor: sec2Color),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: MyTheme.sec2Color),
                       ),
                     ),
                   ]),

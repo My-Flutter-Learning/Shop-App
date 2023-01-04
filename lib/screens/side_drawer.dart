@@ -4,13 +4,13 @@ import 'package:provider/provider.dart';
 import '../providers/auth.dart';
 import '../screens/orders_screen.dart';
 import '../screens/user_products_screen.dart';
+import '../utils/theme.dart';
 
 class SideDrawer extends StatelessWidget {
   const SideDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Color sec2Color = const Color.fromARGB(255, 50, 128, 52);
     return Drawer(
       backgroundColor: Colors.white,
       child: Column(children: [
@@ -24,47 +24,55 @@ class SideDrawer extends StatelessWidget {
           ),
           automaticallyImplyLeading: false,
         ),
-        const Divider(color: Colors.white,),
+        const Divider(
+          color: Colors.white,
+        ),
         ListTile(
-          leading: Icon(Icons.shop, color: sec2Color),
-          title: Text(
+          leading: const Icon(Icons.shop, color: MyTheme.sec2Color),
+          title: const Text(
             'Shop',
-            style: TextStyle(color: sec2Color),
+            style: TextStyle(color: MyTheme.sec2Color),
           ),
           onTap: () {
             Navigator.of(context).pushReplacementNamed('/');
           },
         ),
-        const Divider(color: Colors.white,),
+        const Divider(
+          color: Colors.white,
+        ),
         ListTile(
-          leading: Icon(
+          leading: const Icon(
             Icons.credit_card,
-            color: sec2Color,
+            color: MyTheme.sec2Color,
           ),
-          title: Text(
+          title: const Text(
             'Orders',
-            style: TextStyle(color: sec2Color),
+            style: TextStyle(color: MyTheme.sec2Color),
           ),
           onTap: () {
             Navigator.of(context).pushReplacementNamed(OrdersScreen.routeName);
           },
         ),
-        const Divider(color: Colors.white,),
+        const Divider(
+          color: Colors.white,
+        ),
         ListTile(
-          leading: Icon(
+          leading: const Icon(
             Icons.edit,
-            color: sec2Color,
+            color: MyTheme.sec2Color,
           ),
-          title: Text(
+          title: const Text(
             'Manage Products',
-            style: TextStyle(color: sec2Color),
+            style: TextStyle(color: MyTheme.sec2Color),
           ),
           onTap: () {
             Navigator.of(context)
                 .pushReplacementNamed(UserProductsScreen.routeName);
           },
         ),
-        const Divider(color: Colors.white,),
+        const Divider(
+          color: Colors.white,
+        ),
         ListTile(
           leading: Icon(
             Icons.exit_to_app,

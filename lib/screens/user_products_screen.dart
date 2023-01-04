@@ -2,14 +2,14 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/screens/auth_screen.dart';
-import 'package:shop_app/widgets/loading_spinner.dart';
 
 import '../providers/products_provider.dart';
 // import '../widgets/bottom_navbar.dart';
+import '../widgets/loading_spinner.dart';
 import '../widgets/user_product_item.dart';
 import '../screens/edit_products_screen.dart';
 import '../screens/side_drawer.dart';
+import '../utils/theme.dart';
 
 class UserProductsScreen extends StatelessWidget {
   static const routeName = '/user-products';
@@ -30,10 +30,10 @@ class UserProductsScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         centerTitle: true,
         elevation: 0,
-        iconTheme: IconThemeData(color: sec2Color),
-        title: Text(
+        iconTheme: const IconThemeData(color: MyTheme.sec2Color),
+        title: const Text(
           'Your Products',
-          style: TextStyle(color: sec2Color),
+          style: TextStyle(color: MyTheme.sec2Color),
         ),
         actions: [
           IconButton(
@@ -54,7 +54,7 @@ class UserProductsScreen extends StatelessWidget {
                     text: '',
                   )
                 : RefreshIndicator(
-                    color: sec2Color,
+                    color: MyTheme.sec2Color,
                     onRefresh: () => _refreshScreen(context),
                     child: Consumer<ProductsProvider>(
                       builder: (context, productsData, _) => Padding(

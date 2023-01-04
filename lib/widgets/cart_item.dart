@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/cart.dart' as pc;
-import '../screens/auth_screen.dart';
+import '../utils/theme.dart';
 
 class CartItem extends StatelessWidget {
   final String? id;
@@ -78,11 +78,11 @@ class CartItem extends StatelessWidget {
                 child: FittedBox(
                   child: Text(
                     '\$${price!.toStringAsFixed(2)}',
-                    style: TextStyle(color: sec2Color),
+                    style: const TextStyle(color: MyTheme.sec2Color),
                   ),
                 ),
               ),
-              backgroundColor: baseColor,
+              backgroundColor: MyTheme.baseColor,
             ),
             title: Text(title!),
             subtitle: Text('Total: \$${(price! * quantity!)}'),

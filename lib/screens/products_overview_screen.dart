@@ -9,11 +9,9 @@ import '../widgets/loading_spinner.dart';
 import '../widgets/product_grid.dart';
 import '../screens/cart_screen.dart';
 import '../screens/side_drawer.dart';
+import '../utils/theme.dart';
 
 enum FilterOptions { Favourites, All }
-
-Color secColor = const Color.fromARGB(255, 99, 255, 105);
-Color sec2Color = const Color.fromARGB(255, 50, 128, 52);
 
 class ProductsOverviewScreen extends StatefulWidget {
   static const routeName = '/productsOverviewScreen';
@@ -62,11 +60,11 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         elevation: 0,
         centerTitle: true,
         backgroundColor: Colors.white,
-        title: Text(
+        title: const Text(
           'MyShop',
-          style: TextStyle(color: sec2Color),
+          style: TextStyle(color: MyTheme.sec2Color),
         ),
-        iconTheme: IconThemeData(color: sec2Color),
+        iconTheme: const IconThemeData(color: MyTheme.sec2Color),
         actions: <Widget>[
           PopupMenuButton(
               onSelected: (FilterOptions selectedValue) {
@@ -92,7 +90,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
             builder: (_, cartData, ch) => Badge(
               value: cartData.itemCount.toString(),
               child: ch,
-              color: sec2Color,
+              color: MyTheme.sec2Color,
             ),
             child: IconButton(
                 icon: const Icon(Icons.shopping_cart),

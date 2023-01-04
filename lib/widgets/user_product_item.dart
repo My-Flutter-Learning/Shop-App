@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/providers/products_provider.dart';
-import 'package:shop_app/screens/auth_screen.dart';
-import 'package:shop_app/screens/edit_products_screen.dart';
+import '../providers/products_provider.dart';
+import '../screens/edit_products_screen.dart';
+import '../utils/theme.dart';
 
 class UserProductItem extends StatelessWidget {
   final String id;
@@ -34,7 +34,8 @@ class UserProductItem extends StatelessWidget {
                 TextButton(
                   onPressed: () async {
                     try {
-                      await Provider.of<ProductsProvider>(context, listen: false)
+                      await Provider.of<ProductsProvider>(context,
+                              listen: false)
                           .deleteProduct(id);
                       scaffold.showSnackBar(SnackBar(
                           backgroundColor:
@@ -89,9 +90,9 @@ class UserProductItem extends StatelessWidget {
                   Navigator.of(context)
                       .pushNamed(EditProductScreen.routeName, arguments: id);
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.edit,
-                  color: sec2Color,
+                  color: MyTheme.sec2Color,
                 )),
             IconButton(
                 onPressed: _showDialog,
