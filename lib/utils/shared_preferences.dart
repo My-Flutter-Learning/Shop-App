@@ -4,6 +4,7 @@ class UserPreferences {
   static SharedPreferences? _preferences;
   static const _userToken = 'token';
   static const _userId = 'userid';
+  static const _expiryDate = 'expiryDate';
 
   static Future init() async {
     _preferences = await SharedPreferences.getInstance();
@@ -25,7 +26,16 @@ class UserPreferences {
     return _preferences!.getString(_userId)!;
   }
 
+  static Future setExpiryDate(DateTime expiryDate) async {
+    await _preferences!.setString(_expiryDate, expiryDate.toIso8601String());
+  }
+
+  String get getExpiryDate {
+    return _preferences!.getString(_expiryDate)!;
+  }
+
   static Future clearTokens() {
     return _preferences!.clear();
   }
+    
 }

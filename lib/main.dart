@@ -14,6 +14,7 @@ import './screens/edit_products_screen.dart';
 import './screens/orders_screen.dart';
 import './screens/product_detail_screen.dart';
 import './screens/user_products_screen.dart';
+import './screens/splash_screen.dart';
 import './utils/shared_preferences.dart';
 
 void main() async {
@@ -66,16 +67,20 @@ class MyApp extends StatelessWidget {
                 title: 'Shop App',
                 theme: ThemeData(
                   fontFamily: 'Lato,',
-                  colorScheme:
-                      ColorScheme.fromSwatch(primarySwatch: Colors.purple)
-                          .copyWith(secondary: Colors.deepOrange),
                 ),
                 themeMode: ThemeMode.system,
                 // darkTheme: MyTheme.darkTheme,
 
                 home: authData.isAuth
                     ? const ProductsOverviewScreen()
-                    : const AuthScreen(),
+                    : FutureBuilder(
+                        builder: ((context, authResultSnapshot) =>
+                            authResultSnapshot.connectionState ==
+                                    ConnectionState.waiting
+                                ? const SplashScreen()
+                                : const AuthScreen()),
+                        future: authData.tryAutoLogin(),
+                      ),
                 routes: {
                   ProductsOverviewScreen.routeName: (context) =>
                       const ProductsOverviewScreen(),

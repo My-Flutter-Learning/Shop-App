@@ -128,10 +128,9 @@ class ProductsProvider with ChangeNotifier {
     if (prodIndex >= 0) {
       final url = Uri.parse(
           'https://shop-app-6baad-default-rtdb.firebaseio.com/products/$id.json?auth=${UserPreferences().getUserToken}');
-      // The ocde below is for getting the edit count.
+      // The code below is for getting the edit count.
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
-      print(extractedData);
       await http.patch(url,
           body: json.encode({
             'Title': upd.title,
@@ -144,7 +143,7 @@ class ProductsProvider with ChangeNotifier {
       _items[prodIndex] = upd;
       notifyListeners();
     } else {
-      print('...');
+      log('No Product was updated', name: "Update Product Func");
     }
   }
 

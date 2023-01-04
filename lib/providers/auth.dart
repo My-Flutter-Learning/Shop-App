@@ -54,6 +54,7 @@ class Auth with ChangeNotifier {
             .add(Duration(seconds: int.parse(responseData['expiresIn'])));
         UserPreferences.setUserToken(_token!);
         UserPreferences.setUserId(_userId!);
+        UserPreferences.setExpiryDate(_expiryDate!);
         _autoLogout();
         _canAuthRun = false;
         notifyListeners();
@@ -69,6 +70,23 @@ class Auth with ChangeNotifier {
 
   Future<void> login(String email, String password) async {
     return _authenticate(email, password, FlutterConfig.get('login_url'));
+  }
+
+  Future<bool> tryAutoLogin() async {
+    if (UserPreferences().getUserToken.isEmpty) {
+      return false;
+    } else {
+      final expiryDate = DateTime.parse(UserPreferences().getExpiryDate);
+      if (expiryDate.isAfter(DateTime.now())) {
+        _token = UserPreferences().getUserToken;
+        _userId = UserPreferences().getUserId;
+        _expiryDate = expiryDate;
+        _autoLogout();
+        _canAuthRun = false;
+        notifyListeners();
+      }
+      return true;
+    }
   }
 
   void logout() {
