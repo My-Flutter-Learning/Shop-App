@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/http_exception.dart';
@@ -78,20 +80,7 @@ class _AuthCardState extends State<AuthCard> {
   };
   bool _isLoading = false;
   final _passwordController = TextEditingController();
-
-  void _showErrorDialog(String message) {
-    showDialog(
-        context: context,
-        builder: ((ctx) => AlertDialog(
-              title: const Text('An Error Occurred!'),
-              content: Text(message),
-              actions: [
-                TextButton(
-                    onPressed: () => Navigator.of(ctx).pop(),
-                    child: const Text('Okay'))
-              ],
-            )));
-  }
+  String errorMessage = '';
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) {
@@ -111,7 +100,8 @@ class _AuthCardState extends State<AuthCard> {
             .signup(_authData['email']!, _authData['password']!);
       }
     } on HttpException catch (error) {
-      String errorMessage = 'Authentication failed';
+      log(error.toString(), name: "Auth Error");
+      errorMessage = 'Authentication failed';
       if (error.message.contains('EMAIL_EXISTS')) {
         errorMessage = 'This email address is already in use';
       } else if (error.message.contains('INVALID_EMAIL')) {
@@ -123,11 +113,10 @@ class _AuthCardState extends State<AuthCard> {
       } else if (error.message.contains('INVALID_PASSWORD')) {
         errorMessage = 'Invalid password';
       }
-      _showErrorDialog(errorMessage);
     } catch (error) {
-      const errorMessage =
+      log(error.toString(), name: "Auth Error");
+      errorMessage =
           'Could not authenticate you. Please try again later.';
-      _showErrorDialog(errorMessage);
     }
     setState(() {
       _isLoading = false;
@@ -153,7 +142,7 @@ class _AuthCardState extends State<AuthCard> {
     return Container(
       height: _authMode == AuthMode.Signup ? 330 : 260,
       constraints:
-          BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 260),
+          BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 350 : 310),
       width: deviceSize.width * 0.75,
       padding: const EdgeInsets.all(16.0),
       child: Form(
@@ -260,6 +249,13 @@ class _AuthCardState extends State<AuthCard> {
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   foregroundColor: sec2Color,
                 ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                errorMessage,
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
               ),
             ],
           ),
