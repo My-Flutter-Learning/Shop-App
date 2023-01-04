@@ -151,7 +151,7 @@ class _AuthCardState extends State<AuthCard> {
     final deviceSize = MediaQuery.of(context).size;
     // final statusCode = ModalRoute.of(context)!.settings.arguments as Auth;
     return Container(
-      height: _authMode == AuthMode.Signup ? 320 : 260,
+      height: _authMode == AuthMode.Signup ? 330 : 260,
       constraints:
           BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 260),
       width: deviceSize.width * 0.75,

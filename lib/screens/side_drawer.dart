@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/auth.dart';
 import '../screens/orders_screen.dart';
 import '../screens/user_products_screen.dart';
 
@@ -22,7 +24,7 @@ class SideDrawer extends StatelessWidget {
           ),
           automaticallyImplyLeading: false,
         ),
-        const Divider(),
+        const Divider(color: Colors.white,),
         ListTile(
           leading: Icon(Icons.shop, color: sec2Color),
           title: Text(
@@ -33,7 +35,7 @@ class SideDrawer extends StatelessWidget {
             Navigator.of(context).pushReplacementNamed('/');
           },
         ),
-        const Divider(),
+        const Divider(color: Colors.white,),
         ListTile(
           leading: Icon(
             Icons.credit_card,
@@ -47,7 +49,7 @@ class SideDrawer extends StatelessWidget {
             Navigator.of(context).pushReplacementNamed(OrdersScreen.routeName);
           },
         ),
-        const Divider(),
+        const Divider(color: Colors.white,),
         ListTile(
           leading: Icon(
             Icons.edit,
@@ -60,6 +62,21 @@ class SideDrawer extends StatelessWidget {
           onTap: () {
             Navigator.of(context)
                 .pushReplacementNamed(UserProductsScreen.routeName);
+          },
+        ),
+        const Divider(color: Colors.white,),
+        ListTile(
+          leading: Icon(
+            Icons.exit_to_app,
+            color: Colors.grey[600],
+          ),
+          title: Text(
+            'Logout',
+            style: TextStyle(color: Colors.grey[700]),
+          ),
+          onTap: () {
+            // Navigator.of(context).pop(); // Closes the side drawer before logging out
+            Provider.of<Auth>(context, listen: false).logout();
           },
         )
       ]),

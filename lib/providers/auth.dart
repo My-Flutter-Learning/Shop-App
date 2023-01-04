@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -12,6 +13,7 @@ class Auth with ChangeNotifier {
   DateTime? _expiryDate;
   String? _token;
   bool _canAuthRun = true;
+  Timer? _authTimer;
 
   bool get isAuth {
     return _token != null;
@@ -19,7 +21,7 @@ class Auth with ChangeNotifier {
 
   String get token {
     if (_expiryDate != null && _expiryDate!.isAfter(DateTime.now())) {
-      return UserPreferences.userToken;
+      return UserPreferences().getUserToken;
     }
     _canAuthRun = false;
     return '';
@@ -52,6 +54,7 @@ class Auth with ChangeNotifier {
             .add(Duration(seconds: int.parse(responseData['expiresIn'])));
         UserPreferences.setUserToken(_token!);
         UserPreferences.setUserId(_userId!);
+        _autoLogout();
         _canAuthRun = false;
         notifyListeners();
       } catch (error) {
@@ -66,5 +69,25 @@ class Auth with ChangeNotifier {
 
   Future<void> login(String email, String password) async {
     return _authenticate(email, password, FlutterConfig.get('login_url'));
+  }
+
+  void logout() {
+    _token = null;
+    _userId = null;
+    _expiryDate = null;
+    UserPreferences.clearTokens();
+    if (_authTimer != null) {
+      _authTimer!.cancel();
+      _authTimer = null;
+    }
+    notifyListeners();
+  }
+
+  void _autoLogout() {
+    if (_authTimer != null) {
+      _authTimer!.cancel();
+    }
+    final _timeToExpiry = _expiryDate!.difference(DateTime.now()).inSeconds;
+    _authTimer = Timer(Duration(seconds: _timeToExpiry), logout);
   }
 }
