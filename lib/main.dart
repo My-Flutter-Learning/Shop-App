@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:shop_app/screens/products_overview_screen.dart';
+import 'package:shop_app/utils/network_service.dart';
 import 'package:shop_app/utils/temp_storage.dart';
 
 import './providers/auth.dart' as auth;
@@ -47,6 +48,9 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
         providers: [
+          StreamProvider(
+              create: ((context) => NetworkService().controller.stream),
+              initialData: NetworkStatus.online),
           ChangeNotifierProvider(
             create: (context) => auth.Auth(),
           ),
@@ -82,6 +86,7 @@ class MyApp extends StatelessWidget {
                         future: authData.tryAutoLogin(),
                       ),
                 routes: {
+                  SplashScreen.routeName: (context) => const SplashScreen(),
                   ProductsOverviewScreen.routeName: (context) =>
                       const ProductsOverviewScreen(),
                   ProductDetailScreen.routeName: (context) =>

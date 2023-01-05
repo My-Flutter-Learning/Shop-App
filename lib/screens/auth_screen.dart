@@ -2,11 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/utils/network_service.dart';
 import '../models/http_exception.dart';
 import '../providers/auth.dart';
 import '../utils/theme.dart';
 
-enum AuthMode { Signup, Login }
+enum AuthMode { signup, login }
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -70,7 +71,7 @@ class AuthCard extends StatefulWidget {
 
 class _AuthCardState extends State<AuthCard> {
   final GlobalKey<FormState> _formKey = GlobalKey();
-  AuthMode _authMode = AuthMode.Login;
+  AuthMode _authMode = AuthMode.login;
   final Map<String, String> _authData = {
     'email': '',
     'password': '',
@@ -78,6 +79,30 @@ class _AuthCardState extends State<AuthCard> {
   bool _isLoading = false;
   final _passwordController = TextEditingController();
   String errorMessage = '';
+
+  void _showNetworkDialog() {
+    showDialog(
+        context: context,
+        builder: ((context) => AlertDialog(
+              title: const Text(
+                'Network Error',
+                style: TextStyle(color: MyTheme.sec2Color),
+              ),
+              content:
+                  const Text("Please check your connection and try again."),
+              actions: [
+                Center(
+                  child: TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text(
+                      'Okay',
+                      style: TextStyle(color: MyTheme.sec2Color, fontSize: 16),
+                    ),
+                  ),
+                )
+              ],
+            )));
+  }
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) {
@@ -89,7 +114,7 @@ class _AuthCardState extends State<AuthCard> {
       _isLoading = true;
     });
     try {
-      if (_authMode == AuthMode.Login) {
+      if (_authMode == AuthMode.login) {
         await Provider.of<Auth>(context, listen: false)
             .login(_authData['email']!, _authData['password']!);
       } else {
@@ -120,13 +145,13 @@ class _AuthCardState extends State<AuthCard> {
   }
 
   void _switchAuthMode() {
-    if (_authMode == AuthMode.Login) {
+    if (_authMode == AuthMode.login) {
       setState(() {
-        _authMode = AuthMode.Signup;
+        _authMode = AuthMode.signup;
       });
     } else {
       setState(() {
-        _authMode = AuthMode.Login;
+        _authMode = AuthMode.login;
       });
     }
   }
@@ -135,10 +160,11 @@ class _AuthCardState extends State<AuthCard> {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     // final statusCode = ModalRoute.of(context)!.settings.arguments as Auth;
+    var networkStatus = Provider.of<NetworkStatus>(context);
     return Container(
-      height: _authMode == AuthMode.Signup ? 330 : 260,
+      height: _authMode == AuthMode.signup ? 420 : 260,
       constraints:
-          BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 350 : 310),
+          BoxConstraints(minHeight: _authMode == AuthMode.signup ? 420 : 310),
       width: deviceSize.width * 0.75,
       padding: const EdgeInsets.all(16.0),
       child: Form(
@@ -186,13 +212,13 @@ class _AuthCardState extends State<AuthCard> {
                 onSaved: (value) {
                   _authData['password'] = value!;
                 },
-                textInputAction: _authMode == AuthMode.Signup
+                textInputAction: _authMode == AuthMode.signup
                     ? TextInputAction.next
                     : TextInputAction.done,
               ),
-              if (_authMode == AuthMode.Signup)
+              if (_authMode == AuthMode.signup)
                 TextFormField(
-                  enabled: _authMode == AuthMode.Signup,
+                  enabled: _authMode == AuthMode.signup,
                   cursorColor: MyTheme.sec2Color,
                   decoration: const InputDecoration(
                     labelText: 'Confirm Password',
@@ -202,7 +228,7 @@ class _AuthCardState extends State<AuthCard> {
                     ),
                   ),
                   obscureText: true,
-                  validator: _authMode == AuthMode.Signup
+                  validator: _authMode == AuthMode.signup
                       ? (value) {
                           if (value! != _passwordController.text) {
                             return 'Passwords do not match!';
@@ -220,8 +246,10 @@ class _AuthCardState extends State<AuthCard> {
               else
                 ElevatedButton(
                   child:
-                      Text(_authMode == AuthMode.Login ? 'Login' : 'Sign up'),
-                  onPressed: _submit,
+                      Text(_authMode == AuthMode.login ? 'Login' : 'Sign up'),
+                  onPressed: networkStatus == NetworkStatus.offline
+                      ? _showNetworkDialog
+                      : _submit,
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -235,7 +263,7 @@ class _AuthCardState extends State<AuthCard> {
                 ),
               TextButton(
                 child: Text(
-                    '${_authMode == AuthMode.Login ? 'Sign up' : 'Login'} instead'),
+                    '${_authMode == AuthMode.login ? 'Sign up' : 'Login'} instead'),
                 onPressed: _switchAuthMode,
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
