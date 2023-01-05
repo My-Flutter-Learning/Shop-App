@@ -75,21 +75,20 @@ class Auth with ChangeNotifier {
   Future<bool> tryAutoLogin() async {
     if (UserPreferences().getUserToken.isEmpty) {
       return false;
-    } else {
-      final expiryDate = DateTime.parse(UserPreferences().getExpiryDate);
-      if (expiryDate.isAfter(DateTime.now())) {
-        _token = UserPreferences().getUserToken;
-        _userId = UserPreferences().getUserId;
-        _expiryDate = expiryDate;
-        _autoLogout();
-        _canAuthRun = false;
-        notifyListeners();
-      }
-      return true;
     }
+    final expiryDate = DateTime.parse(UserPreferences().getExpiryDate);
+    if (expiryDate.isAfter(DateTime.now())) {
+      _token = UserPreferences().getUserToken;
+      _userId = UserPreferences().getUserId;
+      _expiryDate = expiryDate;
+      _canAuthRun = false;
+      _autoLogout();
+    }
+    return true;
   }
 
   void logout() {
+    _canAuthRun = true;
     _token = null;
     _userId = null;
     _expiryDate = null;
@@ -107,5 +106,6 @@ class Auth with ChangeNotifier {
     }
     final _timeToExpiry = _expiryDate!.difference(DateTime.now()).inSeconds;
     _authTimer = Timer(Duration(seconds: _timeToExpiry), logout);
+    _canAuthRun = true;
   }
 }
