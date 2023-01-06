@@ -11,7 +11,7 @@ import '../screens/cart_screen.dart';
 import '../screens/side_drawer.dart';
 import '../utils/theme.dart';
 
-enum FilterOptions { Favourites, All }
+enum FilterOptions { favourites, all }
 
 class ProductsOverviewScreen extends StatefulWidget {
   static const routeName = '/productsOverviewScreen';
@@ -69,7 +69,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
           PopupMenuButton(
               onSelected: (FilterOptions selectedValue) {
                 setState(() {
-                  if (selectedValue == FilterOptions.Favourites) {
+                  if (selectedValue == FilterOptions.favourites) {
                     _showFavouritesOnly = true;
                   } else {
                     _showFavouritesOnly = false;
@@ -80,10 +80,10 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
               itemBuilder: (_) => [
                     const PopupMenuItem(
                         child: Text('Only Favourites'),
-                        value: FilterOptions.Favourites),
+                        value: FilterOptions.favourites),
                     const PopupMenuItem(
                       child: Text('Show All'),
-                      value: FilterOptions.All,
+                      value: FilterOptions.all,
                     ),
                   ]),
           Consumer<Cart>(

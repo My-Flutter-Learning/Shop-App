@@ -36,7 +36,7 @@ class AuthScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           vertical: 8.0, horizontal: 94.0),
                       child: const Text(
-                        'My Shop',
+                        'My \n Shop',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           // TO DO: make this color a bit dark

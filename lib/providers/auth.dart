@@ -15,8 +15,14 @@ class Auth with ChangeNotifier {
   bool _canAuthRun = true;
   Timer? _authTimer;
 
-  bool get isAuth {
-    return _token != null;
+  bool get isAuthenticated {
+    try{
+    _token = UserPreferences().getUserToken;
+    }catch(error){
+      log(error.toString(), name: "isAuthenticated Func toke value");
+    }
+    _canAuthRun = true;
+    return _token == null ? false : true;
   }
 
   String get token {
@@ -88,7 +94,6 @@ class Auth with ChangeNotifier {
   }
 
   void logout() {
-    _canAuthRun = true;
     _token = null;
     _userId = null;
     _expiryDate = null;
@@ -97,6 +102,7 @@ class Auth with ChangeNotifier {
       _authTimer!.cancel();
       _authTimer = null;
     }
+    _canAuthRun = true;
     notifyListeners();
   }
 

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_config/flutter_config.dart';
@@ -75,7 +77,7 @@ class MyApp extends StatelessWidget {
                 themeMode: ThemeMode.system,
                 // darkTheme: MyTheme.darkTheme,
 
-                home: authData.isAuth
+                home: authData.isAuthenticated
                     ? const ProductsOverviewScreen()
                     : FutureBuilder(
                         builder: ((context, authResultSnapshot) =>
@@ -83,7 +85,7 @@ class MyApp extends StatelessWidget {
                                     ConnectionState.waiting
                                 ? const SplashScreen()
                                 : const AuthScreen()),
-                        future: authData.tryAutoLogin(),
+                        future: authData.tryAutoLogin().then((value) => log(value.toString(), name: "AutoLogin Value")),
                       ),
                 routes: {
                   SplashScreen.routeName: (context) => const SplashScreen(),
