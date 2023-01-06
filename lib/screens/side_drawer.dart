@@ -83,7 +83,9 @@ class SideDrawer extends StatelessWidget {
             style: TextStyle(color: Colors.grey[700]),
           ),
           onTap: () {
-            // Navigator.of(context).pop(); // Closes the side drawer before logging out
+            Navigator.of(context)
+                .pop(); // Closes the side drawer before logging out
+            Navigator.of(context).pushReplacementNamed('/');
             Provider.of<Auth>(context, listen: false).logout();
           },
         )

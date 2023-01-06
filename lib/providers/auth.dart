@@ -16,21 +16,24 @@ class Auth with ChangeNotifier {
   Timer? _authTimer;
 
   bool get isAuthenticated {
-    try{
-    _token = UserPreferences().getUserToken;
-    }catch(error){
-      log(error.toString(), name: "isAuthenticated Func toke value");
+    try {
+      _token = token;
+    } catch (error) {
+      log(error.toString(), name: "isAuthenticated Func token value");
     }
     _canAuthRun = true;
-    return _token == null ? false : true;
+    return _token!.isEmpty ? false : true;
   }
 
   String get token {
-    if (_expiryDate != null && _expiryDate!.isAfter(DateTime.now())) {
+    final expiryDate = DateTime.parse(UserPreferences().getExpiryDate);
+    if (expiryDate.toString().isNotEmpty && expiryDate.isAfter(DateTime.now())) {
+      _canAuthRun = false;
       return UserPreferences().getUserToken;
+    } else {
+      _canAuthRun = true;
+      return '';
     }
-    _canAuthRun = false;
-    return '';
   }
 
   Future<void> _authenticate(

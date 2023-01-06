@@ -34,8 +34,10 @@ class UserPreferences {
     return _preferences!.getString(_expiryDate)!;
   }
 
-  static Future clearTokens() {
-    return _preferences!.clear();
+  static void clearTokens() {
+    _preferences!.remove(_userToken);
+    _preferences!.remove(_userId);
+    _preferences!.remove(_expiryDate);
+    // return _preferences!.clear(); // Clears all data stored by shared preferences
   }
-    
 }
