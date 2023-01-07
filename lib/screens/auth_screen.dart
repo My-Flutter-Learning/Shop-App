@@ -69,7 +69,8 @@ class AuthCard extends StatefulWidget {
   State<AuthCard> createState() => _AuthCardState();
 }
 
-class _AuthCardState extends State<AuthCard> {
+class _AuthCardState extends State<AuthCard>
+    with SingleTickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey();
   AuthMode _authMode = AuthMode.login;
   final Map<String, String> _authData = {
@@ -79,6 +80,28 @@ class _AuthCardState extends State<AuthCard> {
   bool _isLoading = false;
   final _passwordController = TextEditingController();
   String errorMessage = '';
+
+  late AnimationController _controller;
+  late Animation<Size> _heightAnimation;
+
+  @override
+  void initState() {
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    _heightAnimation = Tween<Size>(
+      begin: const Size(double.infinity, 260),
+      end: const Size(double.infinity, 420),
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.fastOutSlowIn,
+      ),
+    );
+    _heightAnimation.addListener(() => setState(() {}));
+    super.initState();
+  }
 
   void _showNetworkDialog() {
     showDialog(
@@ -146,14 +169,22 @@ class _AuthCardState extends State<AuthCard> {
 
   void _switchAuthMode() {
     if (_authMode == AuthMode.login) {
-      setState(() {
-        _authMode = AuthMode.signup;
-      });
+      _controller.forward().whenComplete(() => setState(() {
+            _authMode = AuthMode.signup;
+          }));
     } else {
       setState(() {
-        _authMode = AuthMode.login;
+        _controller.reverse().whenComplete(() => setState(() {
+              _authMode = AuthMode.login;
+            }));
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -162,9 +193,9 @@ class _AuthCardState extends State<AuthCard> {
     // final statusCode = ModalRoute.of(context)!.settings.arguments as Auth;
     var networkStatus = Provider.of<NetworkStatus>(context);
     return Container(
-      height: _authMode == AuthMode.signup ? 420 : 260,
-      constraints:
-          BoxConstraints(minHeight: _authMode == AuthMode.signup ? 420 : 310),
+      // height: _authMode == AuthMode.signup ? 420 : 260,
+      height: _heightAnimation.value.height,
+      constraints: BoxConstraints(minHeight: _heightAnimation.value.height),
       width: deviceSize.width * 0.75,
       padding: const EdgeInsets.all(16.0),
       child: Form(
