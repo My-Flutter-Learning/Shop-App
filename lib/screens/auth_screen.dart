@@ -99,7 +99,7 @@ class _AuthCardState extends State<AuthCard>
         curve: Curves.fastOutSlowIn,
       ),
     );
-    _heightAnimation.addListener(() => setState(() {}));
+    // _heightAnimation.addListener(() => setState(() {}));
     super.initState();
   }
 
@@ -173,11 +173,9 @@ class _AuthCardState extends State<AuthCard>
             _authMode = AuthMode.signup;
           }));
     } else {
-      setState(() {
-        _controller.reverse().whenComplete(() => setState(() {
-              _authMode = AuthMode.login;
-            }));
-      });
+      _controller.reverse().whenComplete(() => setState(() {
+            _authMode = AuthMode.login;
+          }));
     }
   }
 
@@ -192,12 +190,17 @@ class _AuthCardState extends State<AuthCard>
     final deviceSize = MediaQuery.of(context).size;
     // final statusCode = ModalRoute.of(context)!.settings.arguments as Auth;
     var networkStatus = Provider.of<NetworkStatus>(context);
-    return Container(
-      // height: _authMode == AuthMode.signup ? 420 : 260,
-      height: _heightAnimation.value.height,
-      constraints: BoxConstraints(minHeight: _heightAnimation.value.height),
-      width: deviceSize.width * 0.75,
-      padding: const EdgeInsets.all(16.0),
+    return AnimatedBuilder(
+      animation: _heightAnimation,
+      builder: ((ctx, ch) => Container(
+            // height: _authMode == AuthMode.signup ? 420 : 260,
+            height: _heightAnimation.value.height,
+            constraints:
+                BoxConstraints(minHeight: _heightAnimation.value.height),
+            width: deviceSize.width * 0.75,
+            padding: const EdgeInsets.all(16.0),
+            child: ch,
+          )),
       child: Form(
         key: _formKey,
         child: SingleChildScrollView(
