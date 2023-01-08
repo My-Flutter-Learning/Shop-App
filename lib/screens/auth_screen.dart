@@ -194,18 +194,16 @@ class _AuthCardState extends State<AuthCard>
     final deviceSize = MediaQuery.of(context).size;
     // final statusCode = ModalRoute.of(context)!.settings.arguments as Auth;
     var networkStatus = Provider.of<NetworkStatus>(context);
-    return AnimatedBuilder(
-      animation: _heightAnimation,
-      builder: ((ctx, ch) => Container(
-            // height: _authMode == AuthMode.signup ? 420 : 260,
-            height: _heightAnimation.value.height,
+    return AnimatedContainer(
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInCubic,
+            height: _authMode == AuthMode.signup ? 420 : 260,
+            // height: _heightAnimation.value.height,
             constraints:
-                BoxConstraints(minHeight: _heightAnimation.value.height),
+                BoxConstraints(minHeight: _authMode ==AuthMode.signup ? 420 : 260),
             width: deviceSize.width * 0.75,
             padding: const EdgeInsets.all(16.0),
-            child: ch,
-          )),
-      child: Form(
+            child: Form(
         key: _formKey,
         child: SingleChildScrollView(
           child: Column(
