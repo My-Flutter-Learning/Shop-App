@@ -32,10 +32,13 @@ class ProductDetailScreen extends StatelessWidget {
             SizedBox(
               height: 300,
               width: double.infinity,
-              child: FadeInImage.assetNetwork(
-                placeholder: 'assets/images/image_placeholder.jpg',
-                image: loadedProduct.imageUrl!,
-                fit: BoxFit.cover,
+              child: Hero(
+                tag: loadedProduct.id!,
+                child: FadeInImage.assetNetwork(
+                  placeholder: 'assets/images/image_placeholder.jpg',
+                  image: loadedProduct.imageUrl!,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             const SizedBox(

@@ -22,10 +22,13 @@ class ProductItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: GridTile(
         child: GestureDetector(
-          child: FadeInImage.assetNetwork(
-            placeholder: 'assets/images/image_placeholder.jpg',
-            image: product.imageUrl!,
-            fit: BoxFit.cover,
+          child: Hero(
+            tag: product.id!,
+            child: FadeInImage.assetNetwork(
+              placeholder: 'assets/images/image_placeholder.jpg',
+              image: product.imageUrl!,
+              fit: BoxFit.cover,
+            ),
           ),
           onTap: () {
             Navigator.of(context).pushNamed(

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:shop_app/screens/products_overview_screen.dart';
@@ -31,6 +32,12 @@ void main() async {
   await UserPreferences.init();
 
   TemporaryStorage.service();
+  
+  /*
+    Enables one to see Widgets borders, margins, positions... 
+    It helps with Widget positioning and sizing problems when building the UI
+  */
+  // debugPaintSizeEnabled = true;
 
   runApp(const MyApp());
 }
@@ -85,7 +92,8 @@ class MyApp extends StatelessWidget {
                                     ConnectionState.waiting
                                 ? const SplashScreen()
                                 : const AuthScreen()),
-                        future: authData.tryAutoLogin().then((value) => log(value.toString(), name: "AutoLogin Value")),
+                        future: authData.tryAutoLogin().then((value) =>
+                            log(value.toString(), name: "AutoLogin Value")),
                       ),
                 routes: {
                   SplashScreen.routeName: (context) => const SplashScreen(),
