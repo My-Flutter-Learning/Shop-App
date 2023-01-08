@@ -94,21 +94,22 @@ class _AuthCardState extends State<AuthCard>
     );
 
     _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, -1.5),
+      begin: const Offset(0, 0),
       end: const Offset(0, 0),
     ).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Curves.easeInCubic,
-        reverseCurve: Curves.easeInCubic,
+        curve: Curves.linear,
+        // reverseCurve: Curves.easeInCubic,
       ),
     );
 
     _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
-          parent: _controller,
-          curve: Curves.easeInCubic,
-          reverseCurve: Curves.easeInCubic),
+        parent: _controller,
+        curve: Curves.easeInCubic,
+        // reverseCurve: Curves.easeInCubic,
+      ),
     );
 
     // _heightAnimation.addListener(() => setState(() {}));
