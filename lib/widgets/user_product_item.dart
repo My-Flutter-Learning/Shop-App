@@ -78,6 +78,7 @@ class UserProductItem extends StatelessWidget {
         ),
       ),
       leading: CircleAvatar(
+        backgroundColor: MyTheme.baseColor,
         backgroundImage: NetworkImage(
             imageUrl), // fetches an image from its url. In this case, from the network.
       ),

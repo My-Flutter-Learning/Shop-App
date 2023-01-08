@@ -17,17 +17,22 @@ class Auth with ChangeNotifier {
 
   bool get isAuthenticated {
     try {
-      _token = token;
+      _token = UserPreferences().getUserToken;
+      
     } catch (error) {
-      log(error.toString(), name: "isAuthenticated Func token value");
+      log(error.toString(), name: "Token Fetch Error:");
     }
     _canAuthRun = true;
-    return _token!.isEmpty ? false : true;
+    if (_token == null) {
+      return false;
+    }
+    return true;
   }
 
   String get token {
     final expiryDate = DateTime.parse(UserPreferences().getExpiryDate);
-    if (expiryDate.toString().isNotEmpty && expiryDate.isAfter(DateTime.now())) {
+    if (expiryDate.toString().isNotEmpty &&
+        expiryDate.isAfter(DateTime.now())) {
       _canAuthRun = false;
       return UserPreferences().getUserToken;
     } else {
