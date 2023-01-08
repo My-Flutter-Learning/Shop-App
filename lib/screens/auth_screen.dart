@@ -88,7 +88,8 @@ class _AuthCardState extends State<AuthCard>
   void initState() {
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 500),
+      reverseDuration: const Duration(milliseconds: 500),
     );
     _heightAnimation = Tween<Size>(
       begin: const Size(double.infinity, 260),
@@ -96,7 +97,8 @@ class _AuthCardState extends State<AuthCard>
     ).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Curves.fastOutSlowIn,
+        curve: Curves.easeInCubic,
+        reverseCurve: Curves.easeInCubic,
       ),
     );
     // _heightAnimation.addListener(() => setState(() {}));
@@ -169,13 +171,15 @@ class _AuthCardState extends State<AuthCard>
 
   void _switchAuthMode() {
     if (_authMode == AuthMode.login) {
-      _controller.forward().whenComplete(() => setState(() {
-            _authMode = AuthMode.signup;
-          }));
+      setState(() {
+        _authMode = AuthMode.signup;
+      });
+      _controller.forward();
     } else {
-      _controller.reverse().whenComplete(() => setState(() {
-            _authMode = AuthMode.login;
-          }));
+      setState(() {
+        _authMode = AuthMode.login;
+      });
+      _controller.reverse();
     }
   }
 
