@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_config/flutter_config.dart';
+import 'package:shop_app/helpers/custom_route.dart';
 import 'package:shop_app/screens/products_overview_screen.dart';
 import 'package:shop_app/utils/network_service.dart';
 import 'package:shop_app/utils/temp_storage.dart';
@@ -32,7 +33,6 @@ void main() async {
   await UserPreferences.init();
 
   TemporaryStorage.service();
-  
   /*
     Enables one to see Widgets borders, margins, positions... 
     It helps with Widget positioning and sizing problems when building the UI.
@@ -81,10 +81,11 @@ class MyApp extends StatelessWidget {
                 title: 'Shop App',
                 theme: ThemeData(
                   fontFamily: 'Lato,',
+                  pageTransitionsTheme: PageTransitionsTheme(builders: {
+                    TargetPlatform.android: CustomPageTransitionBuilder(),
+                    TargetPlatform.iOS: CustomPageTransitionBuilder(), 
+                  }),
                 ),
-                themeMode: ThemeMode.system,
-                // darkTheme: MyTheme.darkTheme,
-
                 home: authData.isAuthenticated
                     ? const ProductsOverviewScreen()
                     : FutureBuilder(

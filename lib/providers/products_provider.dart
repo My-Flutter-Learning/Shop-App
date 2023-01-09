@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
 import '../models/http_exception.dart';
 import '../utils/shared_preferences.dart';
@@ -42,7 +44,9 @@ class ProductsProvider with ChangeNotifier {
   // }
 
   Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
-    final filterString = filterByUser ? 'orderBy="creatorId"&equalTo="${UserPreferences().getUserId}"' : '';
+    final filterString = filterByUser
+        ? 'orderBy="creatorId"&equalTo="${UserPreferences().getUserId}"'
+        : '';
     final url = Uri.parse(
         'https://shop-app-6baad-default-rtdb.firebaseio.com/products.json?auth=${UserPreferences().getUserToken}&$filterString');
 
@@ -70,18 +74,6 @@ class ProductsProvider with ChangeNotifier {
                 favData == null ? false : favData[prodId]['isFavourite'],
           ),
         );
-        // loadedProducts.add(
-        //   Product(
-        //     id: prodId,
-        //     title: prodData['Title'],
-        //     description: prodData['Description'],
-        //     price: prodData['Price'],
-        //     imageUrl: prodData['Image Url'],
-        //     isFavourite: favData[prodId] == null
-        //         ? false
-        //         : favData[prodId]['isFavourite'],
-        //   ),
-        // );
       });
       _items = loadedProducts;
 
