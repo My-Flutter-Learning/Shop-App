@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+// import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:shop_app/screens/products_overview_screen.dart';
@@ -35,7 +35,8 @@ void main() async {
   
   /*
     Enables one to see Widgets borders, margins, positions... 
-    It helps with Widget positioning and sizing problems when building the UI
+    It helps with Widget positioning and sizing problems when building the UI.
+    When using it, uncomment the rendering.dart import
   */
   // debugPaintSizeEnabled = true;
 
